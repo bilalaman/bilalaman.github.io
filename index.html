@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bilal Aman</title>
+<meta name="description" content="Bilal Aman - Aviation, Automotive, Horology, Finance">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#08080a;--surface:#111114;--surface-2:#18181c;--surface-3:#202026;--border:#26262e;--border-hover:#36363e;--text:#ece9e2;--text-dim:#9a968e;--text-muted:#5a5850;--gold:#c4a54d;--gold-dim:#c4a54d44;--green:#5ecc7b;--red:#e85d5d;--blue:#5b9cf5}
+html,body{background:#08080a;color:#ece9e2;font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px;pointer-events:none;z-index:9999}
+.glow{position:fixed;border-radius:50%;filter:blur(160px);opacity:.06;pointer-events:none}
+.glow-1{width:500px;height:500px;top:-150px;left:-100px;background:#c4a54d}
+.glow-2{width:400px;height:400px;bottom:-100px;right:-50px;background:#4a5568}
+.dash{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:40px 24px 60px}
+.header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);animation:fadeUp .7s ease both}
+.header h1{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:700;letter-spacing:-1px;line-height:1}
+.header h1 span{color:var(--gold)}
+.header .sub{font-size:13px;color:var(--text-muted);letter-spacing:3px;text-transform:uppercase;margin-top:8px}
+.header-right{display:flex;align-items:center;gap:14px}
+.pill{display:flex;align-items:center;gap:8px;padding:7px 16px;background:var(--surface);border:1px solid var(--border);border-radius:100px;font-size:13px;color:var(--text-dim);white-space:nowrap}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s ease infinite}
+.clock{font-family:'JetBrains Mono',monospace;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;position:relative;overflow:hidden;transition:border-color .3s,transform .3s}
+.card:hover{border-color:var(--border-hover);transform:translateY(-1px)}
+.card-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--text-muted);margin-bottom:18px;font-weight:500}
+.profile{grid-column:span 8;animation:fadeUp .7s ease .1s both}
+.profile-row{display:flex;gap:20px;align-items:center;margin-bottom:18px}
+.avatar{width:76px;height:76px;border-radius:50%;background:linear-gradient(145deg,#c4a54d,#7c6a2e);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:700;color:#08080a;flex-shrink:0}
+.p-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700}
+.p-title{color:var(--gold);font-size:13px;font-weight:500;margin-top:2px}
+.p-loc{color:var(--text-dim);font-size:12px;margin-top:3px}
+.p-bio{color:var(--text-dim);font-size:14px;line-height:1.65;border-top:1px solid var(--border);padding-top:16px}
+.p-interests{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.tag{font-size:11px;padding:5px 12px;border-radius:100px;border:1px solid var(--border);color:var(--text-dim);letter-spacing:.5px}
+.tag.g{border-color:var(--gold-dim);color:var(--gold)}
+.weather{grid-column:span 4;animation:fadeUp .7s ease .3s both;background:linear-gradient(145deg,var(--surface),#0d0f16)}
+.w-top{display:flex;justify-content:space-between;align-items:flex-start}
+.w-temp{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:500;line-height:1}
+.w-icon{font-size:50px}
+.w-city{font-size:14px;color:var(--text-dim);margin-top:4px}
+.w-desc{font-size:13px;color:var(--text-muted);margin-top:2px}
+.w-details{display:flex;gap:20px;margin-top:18px;padding-top:14px;border-top:1px solid var(--border)}
+.w-det{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px}
+.w-det span{display:block;color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:14px;margin-top:3px}
+.ticker{grid-column:span 12;animation:fadeUp .7s ease .35s both;padding:8px 0;overflow:hidden}
+.news{grid-column:span 8;animation:fadeUp .7s ease .4s both}
+.news-list{display:flex;flex-direction:column}
+.news-item{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;text-decoration:none;color:inherit}
+.news-item:last-child{border-bottom:none}
+.news-item:hover .n-title{color:var(--gold)}
+.n-title{font-size:14px;font-weight:500;transition:color .2s;flex:1;padding-right:16px;line-height:1.4;color:var(--text)}
+.n-meta{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.n-source{font-size:11px;color:var(--text-muted);padding:3px 10px;background:var(--surface-2);border-radius:100px;white-space:nowrap}
+.n-time{font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;white-space:nowrap}
+.flights{grid-column:span 4;animation:fadeUp .7s ease .5s both;padding:0;overflow:hidden}
+.flights .card-label{padding:24px 24px 0 24px;margin-bottom:12px}
+.quote{grid-column:span 12;animation:fadeUp .7s ease .6s both;text-align:center;padding:40px 60px}
+.quote .q-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;line-height:1.5;max-width:700px;margin:0 auto;transition:opacity .4s ease}
+.quote .q-author{color:var(--gold);font-size:13px;margin-top:14px;font-weight:500;letter-spacing:1px;transition:opacity .4s ease}
+.footer{text-align:center;margin-top:48px;color:var(--text-muted);font-size:11px;letter-spacing:2px;text-transform:uppercase;animation:fadeUp .7s ease .7s both}
+.footer::before{content:'';display:block;width:32px;height:1px;background:var(--gold);margin:0 auto 16px}
+.refresh-btn{background:#18181c;border:1px solid #26262e;color:#c4a54d;font-size:11px;padding:5px 12px;border-radius:100px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.refresh-btn:hover{border-color:#c4a54d}
+.stat-box{background:#18181c;border-radius:9px;padding:12px;text-align:center}
+.social-pill{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:#18181c;border-radius:9px;text-decoration:none;color:#ece9e2;font-size:13px;transition:all .2s;border:1px solid #26262e}
+.social-pill:hover{border-color:#c4a54d;transform:translateY(-2px)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@media(max-width:1024px){.profile{grid-column:span 6}.weather{grid-column:span 6}.news{grid-column:span 12}.flights{grid-column:span 12}.grid>div{grid-column:span 12 !important}}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.grid>div{grid-column:span 1 !important}.header{flex-direction:column;align-items:flex-start;gap:16px}.header h1{font-size:36px}.dash{padding:24px 16px 48px}.w-temp{font-size:44px}.quote{padding:32px 24px}.quote .q-text{font-size:20px}.n-meta{flex-direction:column;align-items:flex-end;gap:4px}.social-pill{padding:8px 14px;font-size:12px}.ticker{padding:0 !important}.stat-box{padding:10px !important}.w-details{flex-wrap:wrap;gap:12px}}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#08080a}::-webkit-scrollbar-thumb{background:#202026;border-radius:3px}
+body.light{color:#1a1a1a}
+body.light::before{opacity:0}
+body.light .glow{opacity:0}
+body.light .header h1{color:#1a1a1a}
+body.light .header h1 span{color:#9a7d2e}
+body.light .avatar{color:#fff}
+body.light .p-name{color:#1a1a1a}
+body.light .p-title{color:#9a7d2e}
+body.light .p-loc{color:#555550}
+body.light .p-bio{color:#555550}
+body.light .w-temp{color:#1a1a1a}
+body.light .w-city{color:#555550}
+body.light .n-title{color:#1a1a1a}
+body.light .q-text{color:#1a1a1a}
+body.light .q-author{color:#9a7d2e}
+body.light .pill{background:#ffffff;border-color:#d4d0c8;color:#555550}
+body.light .dot-live{background:#2e8b4a}
+body.light .refresh-btn{background:#f0eeea;border-color:#d4d0c8;color:#9a7d2e}
+body.light .social-pill{background:#f0eeea;border-color:#d4d0c8;color:#1a1a1a}
+body.light .social-pill:hover{border-color:#9a7d2e}
+body.light .card{background:#ffffff;border-color:#d4d0c8}
+body.light .card:hover{border-color:#b8b4ac}
+body.light .stat-box{background:#f0eeea !important}
+body.light .interest-tag{border-color:#d4d0c8 !important;color:#555550 !important}
+body.light .interest-tag.g{border-color:#9a7d2e44 !important;color:#9a7d2e !important}
+body.light .footer{color:#8a8880}
+body.light .footer::before{background:#9a7d2e}
+body.light [style*="color:#ece9e2"],body.light [style*="color: #ece9e2"]{color:#1a1a1a !important}
+body.light [style*="color:#e8e6e2"],body.light [style*="color: #e8e6e2"]{color:#333 !important}
+body.light [style*="color:#9a968e"],body.light [style*="color: #9a968e"]{color:#666 !important}
+body.light [style*="color:#5a5850"],body.light [style*="color: #5a5850"]{color:#888 !important}
+body.light [style*="color:#c4a54d"],body.light [style*="color: #c4a54d"]{color:#9a7d2e !important}
+body.light [style*="color:#5ecc7b"],body.light [style*="color: #5ecc7b"]{color:#2e8b4a !important}
+body.light [style*="color:#e85d5d"],body.light [style*="color: #e85d5d"]{color:#c43c3c !important}
+body.light [style*="color:#e8975d"],body.light [style*="color: #e8975d"]{color:#b87530 !important}
+body.light [style*="color:#5b9cf5"],body.light [style*="color: #5b9cf5"]{color:#2d6cc0 !important}
+body.light [style*="background:#18181c"],body.light [style*="background: #18181c"]{background:#f0eeea !important}
+body.light [style*="background:#202026"],body.light [style*="background: #202026"]{background:#e8e6e2 !important}
+body.light [style*="border-color:#26262e"]{border-color:#d4d0c8 !important}
+body.light [style*="border:1px solid #26262e"]{border-color:#d4d0c8 !important}
+body.light [style*="border-left:3px solid #c4a54d"]{border-left-color:#9a7d2e !important}
+body.light [style*="border-bottom:1px solid"]{border-bottom-color:#d4d0c8 !important}
+body.light [style*="border-top:1px solid"]{border-top-color:#d4d0c8 !important}
+</style>
+</head>
+<body>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<div class="dash">
+
+  <div class="header">
+    <div>
+      <h1>Bilal<span>.</span>Aman</h1>
+      <div class="sub">Aviation &#183; Automotive &#183; Horology &#183; Finance</div>
+    </div>
+    <div class="header-right">
+      <button id="theme-toggle" onclick="toggleTheme()" style="background:none;border:1px solid #26262e;border-radius:50%;width:34px;height:34px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .3s;" title="Toggle theme">&#x1F319;</button>
+      <div class="pill"><div class="dot-live"></div> NJ, USA</div>
+      <div class="pill clock" id="clock">--:--:--</div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card profile">
+      <div class="card-label">About</div>
+      <div class="profile-row">
+        <div class="avatar">BA</div>
+        <div>
+          <div class="p-name">Bilal Aman</div>
+          <div class="p-title">Aviation &#183; Automotive &#183; Finance</div>
+          <div class="p-loc">&#x1F4CD; New Jersey, United States</div>
+        </div>
+      </div>
+      <div class="p-bio">Always tracking the next timepiece, the next departure, or the next pitstop!</div>
+      <div class="p-interests">
+        <span class="tag g">&#9992; Aviation</span>
+        <span class="tag g">&#x1F3CE; Automotive</span>
+        <span class="tag g">&#x231A; Horology</span>
+        <span class="tag">&#x1F4C8; Markets</span>
+        <span class="tag">&#x26F7; Skiing</span>
+        <span class="tag">&#x1F916; AI &amp; Tech</span>
+      </div>
+    </div>
+
+    <div class="card weather">
+      <div class="card-label">Weather &#183; New York City</div>
+      <div class="w-top">
+        <div>
+          <div class="w-temp" id="w-temp">--&#176;</div>
+          <div class="w-city">New York City</div>
+          <div class="w-desc" id="w-desc">Loading...</div>
+        </div>
+        <div class="w-icon" id="w-icon">&#x1F324;</div>
+      </div>
+      <div class="w-details">
+        <div class="w-det">Feels Like<span id="w-feels">--&#176;</span></div>
+        <div class="w-det">Humidity<span id="w-hum">--%</span></div>
+        <div class="w-det">Wind<span id="w-wind">-- mph</span></div>
+        <div class="w-det">High/Low<span id="w-hl">--/--</span></div>
+      </div>
+    </div>
+
+    <div class="card ticker" style="padding:0;overflow:hidden;">
+      <iframe src="https://s.tradingview.com/embed-widget/ticker-tape/?locale=en#%7B%22symbols%22%3A%5B%7B%22proName%22%3A%22FOREXCOM%3ASPXUSD%22%2C%22title%22%3A%22S%26P%20500%22%7D%2C%7B%22proName%22%3A%22FOREXCOM%3ANSXUSD%22%2C%22title%22%3A%22US%20100%22%7D%2C%7B%22proName%22%3A%22FOREXCOM%3ADJI%22%2C%22title%22%3A%22Dow%2030%22%7D%2C%7B%22proName%22%3A%22BITSTAMP%3ABTCUSD%22%2C%22title%22%3A%22Bitcoin%22%7D%2C%7B%22proName%22%3A%22TVC%3AGOLD%22%2C%22title%22%3A%22Gold%22%7D%2C%7B%22proName%22%3A%22TVC%3AUSOIL%22%2C%22title%22%3A%22Crude%20Oil%22%7D%2C%7B%22proName%22%3A%22FX%3AEURUSD%22%2C%22title%22%3A%22EUR%2FUSD%22%7D%2C%7B%22proName%22%3A%22NASDAQ%3AAAPL%22%2C%22title%22%3A%22Apple%22%7D%2C%7B%22proName%22%3A%22NASDAQ%3ATSLA%22%2C%22title%22%3A%22Tesla%22%7D%5D%2C%22showSymbolLogo%22%3Atrue%2C%22isTransparent%22%3Atrue%2C%22displayMode%22%3A%22adaptive%22%2C%22colorTheme%22%3A%22dark%22%2C%22locale%22%3A%22en%22%7D" style="width:100%;height:78px;border:none;display:block;" allowtransparency="true" frameborder="0"></iframe>
+    </div>
+
+    <!-- ROW: GAS + RISK + CRYPTO FEAR/GREED -->
+    <!-- GAS PRICE + DOOMSDAY -->
+    <div style="grid-column:span 4;display:flex;flex-direction:column;gap:14px;">
+      <div class="card" style="animation:fadeUp .7s ease .35s both;flex:1;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <div class="card-label" style="margin-bottom:0;">&#9981; US Gas Price</div>
+          <button id="gas-refresh" class="refresh-btn" onclick="loadGas()">&#8635; Refresh</button>
+        </div>
+        <div style="text-align:center;padding:4px 0 10px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:38px;font-weight:500;color:#ece9e2;line-height:1;" id="gas-price">$2.98</div>
+          <div style="font-size:11px;color:#9a968e;margin-top:4px;">national avg &#183; regular</div>
+        </div>
+        <div id="gas-feed" style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px;">
+          <div class="stat-box" style="font-size:12px;color:#5a5850;text-align:left;">Click refresh for latest...</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span id="gas-status" style="font-size:10px;color:#5ecc7b;"></span>
+          <a href="https://gasprices.aaa.com" target="_blank" rel="noopener" style="font-size:10px;color:#c4a54d;text-decoration:none;">AAA &#8594;</a>
+        </div>
+      </div>
+      <div class="card" style="animation:fadeUp .7s ease .38s both;flex:1;">
+        <div class="card-label">&#x26A0; Global Risk Meter</div>
+        <div style="text-align:center;padding:4px 0;">
+          <div style="position:relative;width:140px;height:78px;margin:0 auto 8px;">
+            <svg viewBox="0 0 140 78" style="width:100%;height:100%;">
+              <path d="M12,70 A58,58 0 0,1 128,70" fill="none" stroke="#26262e" stroke-width="10" stroke-linecap="round"/>
+              <path d="M12,70 A58,58 0 0,1 128,70" fill="none" stroke="url(#riskGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="145 182"/>
+              <defs><linearGradient id="riskGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#5ecc7b"/><stop offset="50%" stop-color="#c4a54d"/><stop offset="100%" stop-color="#e85d5d"/></linearGradient></defs>
+              <text x="70" y="62" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="26" font-weight="500" fill="#e8975d">72</text>
+            </svg>
+          </div>
+          <div style="font-size:14px;font-weight:600;color:#e8975d;">Elevated</div>
+          <div style="font-size:10px;color:#5a5850;margin-top:4px;">Composite: geopolitical + debt + market</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;"><span style="color:#9a968e;">US Debt</span><span style="font-family:'JetBrains Mono',monospace;color:#e85d5d;">$36.2T</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;"><span style="color:#9a968e;">Geopolitical</span><span style="font-family:'JetBrains Mono',monospace;color:#e8975d;">High</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;"><span style="color:#9a968e;">Doomsday Clock</span><span style="font-family:'JetBrains Mono',monospace;color:#e85d5d;">89 sec</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;"><span style="color:#9a968e;">VIX</span><span id="risk-vix" style="font-family:'JetBrains Mono',monospace;color:#c4a54d;">--</span></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px solid #26262e;">
+          <span style="font-size:9px;color:#5ecc7b;">&#9664; Low</span>
+          <span style="font-size:9px;color:#c4a54d;">Moderate</span>
+          <span style="font-size:9px;color:#e85d5d;">Critical &#9654;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .35s both;text-align:center;">
+      <div class="card-label">Crypto Fear &amp; Greed</div>
+      <div style="position:relative;width:160px;height:90px;margin:0 auto 12px;">
+        <svg viewBox="0 0 160 90" style="width:100%;height:100%;">
+          <path d="M15,80 A65,65 0 0,1 145,80" fill="none" stroke="#26262e" stroke-width="12" stroke-linecap="round"/>
+          <path id="fg-arc" d="M15,80 A65,65 0 0,1 145,80" fill="none" stroke="#5a5850" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 204"/>
+          <text id="fg-value" x="80" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="32" font-weight="500" fill="#ece9e2">--</text>
+        </svg>
+      </div>
+      <div id="fg-label" style="font-size:16px;font-weight:600;color:#5a5850;margin-bottom:4px;">Loading...</div>
+      <div id="fg-updated" style="font-size:10px;color:#5a5850;">&#183;</div>
+      <div style="display:flex;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:1px solid #26262e;">
+        <span style="font-size:10px;color:#e85d5d;">&#9664; Fear</span>
+        <span style="font-size:10px;color:#5ecc7b;">Greed &#9654;</span>
+      </div>
+    </div>
+
+    <!-- CORPORATE LAYOFFS -->
+    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .38s both;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <div class="card-label" style="margin-bottom:0;">Corporate Layoffs &#183; 2026</div>
+        <button id="layoff-refresh" class="refresh-btn" onclick="loadLayoffs()">&#8635; Refresh</button>
+      </div>
+      <div style="text-align:center;padding:8px 0 14px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:500;color:#e85d5d;line-height:1;">156,742</div>
+        <div style="font-size:12px;color:#9a968e;margin-top:6px;">US job cuts &#183; Jan-Feb 2026</div>
+        <div style="font-size:11px;color:#5a5850;margin-top:4px;">5th highest Jan-Feb since 2009</div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <div class="stat-box" style="flex:1;"><div style="font-size:9px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Jan 2026</div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#e85d5d;">108,435</div><div style="font-size:10px;color:#e85d5d;margin-top:2px;">&#9650; 118% YoY</div></div>
+        <div class="stat-box" style="flex:1;"><div style="font-size:9px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Feb 2026</div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#5ecc7b;">48,307</div><div style="font-size:10px;color:#5ecc7b;margin-top:2px;">&#9660; 72% YoY</div></div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:14px;">
+        <div class="stat-box" style="flex:1;"><div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;color:#ece9e2;">33,330</div><div style="font-size:9px;color:#5a5850;margin-top:3px;">Tech YTD</div><div style="font-size:9px;color:#e85d5d;">&#9650; 51% vs 2025</div></div>
+        <div class="stat-box" style="flex:1;"><div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;color:#ece9e2;">5,306</div><div style="font-size:9px;color:#5a5850;margin-top:3px;">Jan hiring</div><div style="font-size:9px;color:#e85d5d;">Lowest since '09</div></div>
+        <div class="stat-box" style="flex:1;"><div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:500;color:#c4a54d;">58%</div><div style="font-size:9px;color:#5a5850;margin-top:3px;">of companies</div><div style="font-size:9px;color:#5a5850;">plan cuts '26</div></div>
+      </div>
+      <div class="stat-box" style="padding:12px 14px;margin-bottom:14px;text-align:left;">
+        <div style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Full Year Comparison</div>
+        <div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#9a968e;">2025</span><span style="font-family:'JetBrains Mono',monospace;color:#e85d5d;">1.17M</span></div><div style="background:#26262e;border-radius:4px;height:6px;overflow:hidden;"><div style="background:#e85d5d;height:100%;width:100%;border-radius:4px;"></div></div></div>
+        <div style="margin-bottom:8px;"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#9a968e;">2024</span><span style="font-family:'JetBrains Mono',monospace;color:#c4a54d;">761K</span></div><div style="background:#26262e;border-radius:4px;height:6px;overflow:hidden;"><div style="background:#c4a54d;height:100%;width:65%;border-radius:4px;"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;"><span style="color:#9a968e;">2023</span><span style="font-family:'JetBrains Mono',monospace;color:#5b9cf5;">721K</span></div><div style="background:#26262e;border-radius:4px;height:6px;overflow:hidden;"><div style="background:#5b9cf5;height:100%;width:62%;border-radius:4px;"></div></div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><span style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1.5px;">Headlines</span><span id="layoff-status" style="font-size:10px;color:#5ecc7b;"></span></div>
+      <div id="layoff-feed" style="display:flex;flex-direction:column;gap:6px;">
+        <div class="stat-box" style="font-size:13px;color:#5a5850;text-align:left;">Click refresh to load...</div>
+      </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid #26262e;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:#5a5850;">Source: Challenger</span>
+        <a href="https://www.warntracker.com" target="_blank" rel="noopener" style="font-size:11px;color:#c4a54d;text-decoration:none;">WARN Tracker &#8594;</a>
+      </div>
+    </div>
+
+    <!-- SIEMENS INTELLIGENCE -->
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .4s both;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div class="card-label" style="margin-bottom:0;">&#x1F3E2; Siemens Intelligence</div>
+        <button id="siemens-refresh" class="refresh-btn" onclick="loadSiemens()">&#8635; Refresh</button>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <!-- STOCK MINI CHART -->
+        <div style="flex:1;min-width:280px;background:#18181c;border-radius:10px;overflow:hidden;">
+          <iframe src="https://s.tradingview.com/embed-widget/mini-symbol-overview/?locale=en#%7B%22symbol%22%3A%22XETR%3ASIE%22%2C%22width%22%3A%22100%25%22%2C%22height%22%3A%22100%25%22%2C%22dateRange%22%3A%223M%22%2C%22colorTheme%22%3A%22dark%22%2C%22isTransparent%22%3Atrue%2C%22autosize%22%3Atrue%2C%22largeChartUrl%22%3A%22%22%2C%22noTimeScale%22%3Afalse%7D" style="width:100%;height:180px;border:none;display:block;" allowtransparency="true" frameborder="0"></iframe>
+        </div>
+        <!-- NEWS -->
+        <div style="flex:2;min-width:300px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1.5px;">Latest News</span>
+            <span id="siemens-status" style="font-size:10px;color:#5ecc7b;"></span>
+          </div>
+          <div id="siemens-feed" style="display:flex;flex-direction:column;gap:6px;">
+            <div style="padding:10px 12px;background:#18181c;border-radius:8px;font-size:13px;color:#5a5850;">Loading...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- W&W COUNTDOWN + BMW M3 -->
+    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .42s both;text-align:center;">
+      <div class="card-label">&#x231A; Watches &amp; Wonders 2026</div>
+      <div style="font-size:11px;color:#9a968e;margin-bottom:12px;">Geneva &#183; April 14-20, 2026</div>
+      <div id="ww-countdown" style="display:flex;gap:8px;justify-content:center;margin-bottom:14px;"></div>
+      <div style="font-size:11px;color:#5a5850;margin-bottom:12px;">66 brands &#183; Rolex &#183; Patek &#183; AP &#183; Cartier</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;">
+        <span style="font-size:10px;padding:4px 10px;border-radius:100px;border:1px solid #c4a54d44;color:#c4a54d;">Public: Apr 18-20</span>
+        <span style="font-size:10px;padding:4px 10px;border-radius:100px;border:1px solid #26262e;color:#9a968e;">Trade: Apr 14-17</span>
+      </div>
+    </div>
+
+    <div class="card" style="grid-column:span 8;animation:fadeUp .7s ease .42s both;">
+      <div class="card-label">&#x1F3CE; My Ride</div>
+      <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+        <div style="flex:1;min-width:200px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:#ece9e2;line-height:1.1;">BMW G80 M3</div>
+          <div style="font-size:14px;color:#c4a54d;font-weight:500;margin-top:4px;">Competition xDrive</div>
+          <div style="font-size:13px;color:#5ecc7b;margin-top:2px;">Isle of Man Green</div>
+          <div style="display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;">
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#ece9e2;">503</div><div style="font-size:9px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;">HP</div></div>
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#ece9e2;">3.4s</div><div style="font-size:9px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;">0-60</div></div>
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#ece9e2;">S58</div><div style="font-size:9px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;">Engine</div></div>
+            <div><div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:#ece9e2;">AWD</div><div style="font-size:9px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;">Drive</div></div>
+          </div>
+          <div style="margin-top:14px;padding-top:12px;border-top:1px solid #26262e;font-size:11px;color:#5a5850;">3.0L Twin-Turbo Inline-6 &#183; 8-Speed Auto &#183; Carbon Fiber Roof</div>
+        </div>
+        <div style="flex:0 0 auto;width:80px;height:80px;border-radius:50%;background:linear-gradient(145deg,#2d5a3d,#1a3d28);display:flex;align-items:center;justify-content:center;border:2px solid #2d5a3d;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:#5ecc7b;">M</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLEX MARKET TRACKER -->
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .43s both;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div class="card-label" style="margin-bottom:0;">&#x1F451; Rolex Secondary Market</div>
+        <button id="rolex-refresh" class="refresh-btn" onclick="loadRolex()">&#8635; Refresh</button>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px;">
+        <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
+          <div style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Daytona 116500LN</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#ece9e2;">$26,800</div>
+          <div style="font-size:10px;color:#e85d5d;margin-top:3px;">&#9660; 4.2% vs 6mo ago</div>
+          <div style="font-size:9px;color:#5a5850;margin-top:2px;">Retail: $15,100</div>
+        </div>
+        <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
+          <div style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">GMT Pepsi 126710BLRO</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#ece9e2;">$18,500</div>
+          <div style="font-size:10px;color:#5ecc7b;margin-top:3px;">&#9650; 2.1% vs 6mo ago</div>
+          <div style="font-size:9px;color:#5a5850;margin-top:2px;">Retail: $11,300</div>
+        </div>
+        <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
+          <div style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Submariner 124060</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#ece9e2;">$10,200</div>
+          <div style="font-size:10px;color:#e85d5d;margin-top:3px;">&#9660; 1.8% vs 6mo ago</div>
+          <div style="font-size:9px;color:#5a5850;margin-top:2px;">Retail: $9,100</div>
+        </div>
+        <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
+          <div style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Sky-Dweller 326934</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#ece9e2;">$22,400</div>
+          <div style="font-size:10px;color:#5ecc7b;margin-top:3px;">&#9650; 5.6% vs 6mo ago</div>
+          <div style="font-size:9px;color:#5a5850;margin-top:2px;">Retail: $15,850</div>
+        </div>
+        <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
+          <div style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Land-Dweller 127334</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:#ece9e2;">$34,000</div>
+          <div style="font-size:10px;color:#c4a54d;margin-top:3px;">&#x1F525; 2.6x retail</div>
+          <div style="font-size:9px;color:#5a5850;margin-top:2px;">Retail: $13,050</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <span style="font-size:10px;color:#5a5850;text-transform:uppercase;letter-spacing:1.5px;">Market Headlines</span>
+        <span id="rolex-status" style="font-size:10px;color:#5ecc7b;"></span>
+      </div>
+      <div id="rolex-feed" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div class="stat-box" style="font-size:12px;color:#5a5850;text-align:left;">Click refresh for latest...</div>
+      </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid #26262e;display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:11px;color:#5a5850;">Prices approx &#183; WatchCharts / Chrono24</span>
+        <a href="https://watchcharts.com/watches/brand/rolex" target="_blank" rel="noopener" style="font-size:11px;color:#c4a54d;text-decoration:none;">WatchCharts &#8594;</a>
+      </div>
+    </div>
+
+    <!-- BLOG / THOUGHTS -->
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .44s both;">
+      <div class="card-label">&#x1F4AD; Thoughts</div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="padding:16px;background:#18181c;border-radius:10px;border-left:3px solid #c4a54d;">
+          <div style="font-size:14px;color:#ece9e2;line-height:1.6;margin-bottom:10px;">Welcome to my corner of the internet. This dashboard is a living project &#8212; built from scratch with Claude AI, hosted on GitHub Pages, and updated whenever inspiration strikes. Everything you see here runs on free APIs and zero backend. If you're into aviation, cars, watches, or just tracking the pulse of the world &#8212; you're in the right place.</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:12px;color:#c4a54d;font-weight:500;">Bilal</span><span style="font-size:11px;color:#5a5850;font-family:'JetBrains Mono',monospace;">Mar 6, 2026</span></div>
+        </div>
+        <!-- ADD NEW POSTS HERE: copy the block above, change the text and date -->
+      </div>
+    </div>
+
+    <!-- ROW: HISTORY -->
+    <div class="card" style="grid-column:span 8;animation:fadeUp .7s ease .4s both;">
+      <div class="card-label">&#x1F4C5; This Day in History &#183; <span id="history-date" style="color:#c4a54d;text-transform:none;letter-spacing:0;font-size:10px;"></span></div>
+      <div id="history-feed" style="display:flex;flex-direction:column;gap:0;">
+        <div style="padding:12px 0;color:#5a5850;font-size:13px;">Loading...</div>
+      </div>
+    </div>
+
+    <div class="card quote" style="grid-column:span 4;">
+      <div class="q-text" id="q-text">&#8220;The details are not the details. They make the design.&#8221;</div>
+      <div class="q-author" id="q-author">&#8212; Charles Eames</div>
+    </div>
+
+    <!-- ROW: NEWS -->
+    <div class="card news">
+      <div class="card-label">News Feed &#183; <span id="news-status" style="color:#5ecc7b;font-size:10px;text-transform:none;letter-spacing:0;">Loading</span></div>
+      <div class="news-list" id="news-list">
+        <div class="news-item"><div class="n-title" style="color:#5a5850">Loading headlines...</div></div>
+      </div>
+    </div>
+
+    <!-- ROW: ISS + FLIGHTS -->
+    <div class="card" style="grid-column:span 8;animation:fadeUp .7s ease .55s both;padding:0;overflow:hidden;">
+      <div class="card-label" style="padding:24px 24px 0 24px;margin-bottom:12px;">&#x1F6F0; ISS Live Tracker &#183; <span id="iss-info" style="color:#5ecc7b;text-transform:none;letter-spacing:0;font-size:10px;">Updating...</span></div>
+      <div style="width:100%;height:280px;position:relative;border-radius:0 0 14px 14px;overflow:hidden;">
+        <iframe id="iss-map" src="https://www.openstreetmap.org/export/embed.html?bbox=-180,-60,180,80&layer=mapnik&marker=0,0" style="width:100%;height:100%;border:none;display:block;filter:invert(0.9) hue-rotate(180deg) brightness(0.8) contrast(1.2);" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="card flights" style="padding:0;overflow:hidden;">
+      <div class="card-label">Live Flights &#183; Newark Area</div>
+      <iframe src="https://globe.adsb.fi/?lat=40.53&lon=-74.54&zoom=8.5&hideSidebar&hideButtons&dark" style="width:100%;height:320px;border:none;border-radius:0 0 14px 14px;display:block;" allowfullscreen></iframe>
+    </div>
+
+    <!-- CONNECT -->
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .55s both;padding:20px 24px;">
+      <div class="card-label" style="text-align:center;">Connect</div>
+      <div id="social-links" style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;"></div>
+    </div>
+
+  </div>
+  <div class="footer">bilalaman.com &#183; crafted with precision</div>
+</div>
+
+<script>
+// === CLOCK ===
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})}
+setInterval(tick,1000);tick();
+
+// === DARK/LIGHT THEME TOGGLE ===
+var isDark=true;
+function toggleTheme(){
+  isDark=!isDark;
+  var r=document.documentElement.style;
+  var btn=document.getElementById('theme-toggle');
+  if(isDark){
+    r.setProperty('--bg','#08080a');r.setProperty('--surface','#111114');r.setProperty('--surface-2','#18181c');r.setProperty('--surface-3','#202026');
+    r.setProperty('--border','#26262e');r.setProperty('--border-hover','#36363e');r.setProperty('--text','#ece9e2');r.setProperty('--text-dim','#9a968e');r.setProperty('--text-muted','#5a5850');
+    r.setProperty('--gold','#c4a54d');r.setProperty('--green','#5ecc7b');r.setProperty('--red','#e85d5d');r.setProperty('--blue','#5b9cf5');
+    document.body.style.background='#08080a';document.querySelector('html').style.background='#08080a';
+    btn.textContent='\uD83C\uDF19';btn.style.borderColor='#26262e';
+    document.body.classList.remove('light');
+  }else{
+    r.setProperty('--bg','#f5f3ef');r.setProperty('--surface','#ffffff');r.setProperty('--surface-2','#f0eeea');r.setProperty('--surface-3','#e8e6e2');
+    r.setProperty('--border','#d4d0c8');r.setProperty('--border-hover','#b8b4ac');r.setProperty('--text','#1a1a1a');r.setProperty('--text-dim','#555550');r.setProperty('--text-muted','#8a8880');
+    r.setProperty('--gold','#9a7d2e');r.setProperty('--green','#2e8b4a');r.setProperty('--red','#c43c3c');r.setProperty('--blue','#2d6cc0');
+    document.body.style.background='#f5f3ef';document.querySelector('html').style.background='#f5f3ef';
+    btn.textContent='\u2600\uFE0F';btn.style.borderColor='#d4d0c8';
+    document.body.classList.add('light');
+  }
+}
+
+// === WATCHES & WONDERS COUNTDOWN ===
+function updateWWCountdown(){
+  var target=new Date('2026-04-14T08:30:00+02:00');
+  var now=new Date();
+  var diff=target-now;
+  var el=document.getElementById('ww-countdown');
+  if(diff<=0){el.innerHTML='<div style="font-size:18px;color:#c4a54d;font-weight:600;">It\u2019s happening NOW!</div>';return;}
+  var days=Math.floor(diff/86400000);
+  var hours=Math.floor((diff%86400000)/3600000);
+  var mins=Math.floor((diff%3600000)/60000);
+  var secs=Math.floor((diff%60000)/1000);
+  function box(v,l){return '<div style="background:#18181c;border-radius:9px;padding:10px 14px;min-width:58px;"><div style="font-family:\'JetBrains Mono\',monospace;font-size:22px;font-weight:500;color:#c4a54d;">'+v+'</div><div style="font-size:8px;color:#5a5850;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">'+l+'</div></div>';}
+  el.innerHTML=box(days,'Days')+box(hours,'Hrs')+box(mins,'Min')+box(secs,'Sec');
+}
+updateWWCountdown();
+setInterval(updateWWCountdown,1000);
+
+// === SOCIAL LINKS (built via JS to avoid email scraping) ===
+var socials=[
+  {label:'in',color:'#5b9cf5',name:'LinkedIn',url:'https://linkedin.com/in/bilalaman'},
+  {label:'\u{1D54F}',color:'#e8e6e2',name:'Twitter / X',url:'https://x.com/bilalaman'},
+  {label:'IG',color:'#e1306c',name:'Instagram',url:'https://instagram.com/bilalaman'},
+  {label:'GH',color:'#e8e6e2',name:'GitHub',url:'https://bilalaman.github.io'},
+  {label:'VS',color:'#e8e6e2',name:'VSCO',url:'https://vsco.co/bilalaman/gallery'},
+  {label:'@',color:'#c4a54d',name:'Email',url:'mai'+'lto:'+'Bilal.am'+'an@gm'+'ail.com'}
+];
+var sc=document.getElementById('social-links');
+socials.forEach(function(s){
+  var a=document.createElement('a');
+  a.href=s.url;a.className='social-pill';
+  if(s.name!=='Email'){a.target='_blank';a.rel='noopener';}
+  a.innerHTML='<span style="color:'+s.color+';font-weight:600;">'+s.label+'</span> '+s.name;
+  sc.appendChild(a);
+});
+
+// === WEATHER ===
+function loadWeather(){
+  var x=new XMLHttpRequest();
+  x.open('GET','https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.006&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FNew_York',true);
+  x.timeout=10000;
+  x.onload=function(){
+    if(x.status===200){
+      try{
+        var d=JSON.parse(x.responseText),c=d.current;
+        var icons={0:'\u2600\uFE0F',1:'\uD83C\uDF24',2:'\u26C5',3:'\u2601\uFE0F',45:'\uD83C\uDF2B',48:'\uD83C\uDF2B',51:'\uD83C\uDF26',53:'\uD83C\uDF27',55:'\uD83C\uDF27',61:'\uD83C\uDF27',63:'\uD83C\uDF27',65:'\uD83C\uDF27',71:'\uD83C\uDF28',73:'\uD83C\uDF28',75:'\u2744\uFE0F',80:'\uD83C\uDF26',81:'\uD83C\uDF27',82:'\u26C8',95:'\u26C8',96:'\u26C8',99:'\u26C8'};
+        var descs={0:'Clear Sky',1:'Mainly Clear',2:'Partly Cloudy',3:'Overcast',45:'Foggy',48:'Foggy',51:'Light Drizzle',53:'Drizzle',55:'Heavy Drizzle',61:'Light Rain',63:'Rain',65:'Heavy Rain',71:'Light Snow',73:'Snow',75:'Heavy Snow',80:'Rain Showers',81:'Rain Showers',82:'Heavy Showers',95:'Thunderstorm',96:'Thunderstorm',99:'Thunderstorm'};
+        document.getElementById('w-temp').textContent=Math.round(c.temperature_2m)+'\u00B0F';
+        document.getElementById('w-icon').textContent=icons[c.weather_code]||'\uD83C\uDF21';
+        document.getElementById('w-desc').textContent=descs[c.weather_code]||'--';
+        document.getElementById('w-feels').textContent=Math.round(c.apparent_temperature)+'\u00B0F';
+        document.getElementById('w-hum').textContent=c.relative_humidity_2m+'%';
+        document.getElementById('w-wind').textContent=Math.round(c.wind_speed_10m)+' mph';
+        document.getElementById('w-hl').textContent=Math.round(d.daily.temperature_2m_max[0])+'\u00B0 / '+Math.round(d.daily.temperature_2m_min[0])+'\u00B0';
+      }catch(e){document.getElementById('w-desc').textContent='Unavailable';}
+    }
+  };
+  x.onerror=function(){document.getElementById('w-desc').textContent='Unavailable';};
+  x.send();
+}
+loadWeather();
+setInterval(loadWeather,1800000);
+
+// === HELPERS ===
+function timeAgo(d){
+  var s=Math.floor((new Date()-d)/1000);
+  if(s<60)return 'just now';
+  var m=Math.floor(s/60);if(m<60)return m+'m ago';
+  var h=Math.floor(m/60);if(h<24)return h+'h ago';
+  return Math.floor(h/24)+'d ago';
+}
+function cleanTitle(t){return t.replace(/ - [^-]+$/,'').trim();}
+var R2J='https://api.rss2json.com/v1/api.json?rss_url=';
+
+// === NEWS FEED ===
+var FEEDS=[
+  {url:'https://news.google.com/rss/search?q=aviation+airlines&hl=en-US&gl=US&ceid=US:en',source:'Aviation'},
+  {url:'https://news.google.com/rss/search?q=BMW+Porsche+automotive&hl=en-US&gl=US&ceid=US:en',source:'Auto'},
+  {url:'https://news.google.com/rss/search?q=Rolex+watches+horology&hl=en-US&gl=US&ceid=US:en',source:'Watches'},
+  {url:'https://news.google.com/rss/search?q=stock+market+Wall+Street&hl=en-US&gl=US&ceid=US:en',source:'Markets'}
+];
+function loadNews(){
+  var statusEl=document.getElementById('news-status');
+  statusEl.textContent='Updating...';statusEl.style.color='#c4a54d';
+  var all=[],done=0,total=FEEDS.length;
+  FEEDS.forEach(function(feed,idx){
+    setTimeout(function(){
+      var x=new XMLHttpRequest();
+      x.open('GET',R2J+encodeURIComponent(feed.url),true);
+      x.timeout=10000;
+      x.onload=function(){
+        if(x.status===200){try{var data=JSON.parse(x.responseText);
+          if(data.status==='ok'&&data.items){data.items.slice(0,3).forEach(function(item){
+            var t=cleanTitle(item.title||'');
+            if(t)all.push({title:t,link:item.link||'#',date:new Date(item.pubDate),source:feed.source});
+          })}}catch(e){}}
+        done++;if(done===total)renderNews(all);
+      };
+      x.onerror=x.ontimeout=function(){done++;if(done===total)renderNews(all);};
+      x.send();
+    },idx*2000);
+  });
+}
+function renderNews(all){
+  var el=document.getElementById('news-status'),c=document.getElementById('news-list');
+  all.sort(function(a,b){return b.date-a.date;});
+  if(all.length===0){c.innerHTML='<div class="news-item"><div class="n-title" style="color:#5a5850">Unable to load news</div></div>';el.textContent='Offline';el.style.color='#e85d5d';return;}
+  var top=all.slice(0,10),html='';
+  for(var i=0;i<top.length;i++){
+    var a=top[i];
+    html+='<a href="'+a.link+'" target="_blank" rel="noopener" class="news-item"><div class="n-title">'+a.title+'</div><div class="n-meta"><span class="n-source">'+a.source+'</span><span class="n-time">'+timeAgo(a.date)+'</span></div></a>';
+  }
+  c.innerHTML=html;el.textContent='Live';el.style.color='#5ecc7b';
+}
+loadNews();
+setInterval(loadNews,3600000);
+
+// === LAYOFF HEADLINES ===
+function loadLayoffs(){
+  var btn=document.getElementById('layoff-refresh'),st=document.getElementById('layoff-status'),feed=document.getElementById('layoff-feed');
+  btn.textContent='\u21BB Loading...';btn.style.opacity='0.5';
+  var x=new XMLHttpRequest();
+  x.open('GET',R2J+encodeURIComponent('https://news.google.com/rss/search?q=corporate+layoffs+job+cuts+2026&hl=en-US&gl=US&ceid=US:en'),true);
+  x.timeout=12000;
+  x.onload=function(){
+    btn.textContent='\u21BB Refresh';btn.style.opacity='1';
+    if(x.status===200){try{var data=JSON.parse(x.responseText);
+      if(data.status==='ok'&&data.items&&data.items.length>0){
+        var html='',items=data.items.slice(0,5);
+        for(var i=0;i<items.length;i++){
+          var t=cleanTitle(items[i].title),lnk=items[i].link||'#';
+          html+='<a href="'+lnk+'" target="_blank" rel="noopener" style="display:block;padding:10px 12px;background:#18181c;border-radius:8px;font-size:13px;color:#ece9e2;text-decoration:none;transition:background .2s;line-height:1.4;" onmouseover="this.style.background=\'#202026\'" onmouseout="this.style.background=\'#18181c\'">'+t+'</a>';
+        }
+        feed.innerHTML=html;
+        st.textContent='Updated '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});st.style.color='#5ecc7b';return;
+      }}catch(e){}}
+    feed.innerHTML='<div style="padding:10px 12px;background:#18181c;border-radius:8px;font-size:13px;color:#e85d5d;">Failed \u2014 click refresh</div>';
+    st.textContent='Error';st.style.color='#e85d5d';
+  };
+  x.onerror=x.ontimeout=function(){btn.textContent='\u21BB Refresh';btn.style.opacity='1';};
+  x.send();
+}
+setTimeout(loadLayoffs,20000);
+
+// === ROLEX MARKET NEWS ===
+function loadRolex(){
+  var btn=document.getElementById('rolex-refresh'),st=document.getElementById('rolex-status'),feed=document.getElementById('rolex-feed');
+  btn.textContent='\u21BB Loading...';btn.style.opacity='0.5';
+  var x=new XMLHttpRequest();
+  x.open('GET',R2J+encodeURIComponent('https://news.google.com/rss/search?q=Rolex+watch+market+price&hl=en-US&gl=US&ceid=US:en'),true);
+  x.timeout=12000;
+  x.onload=function(){
+    btn.textContent='\u21BB Refresh';btn.style.opacity='1';
+    if(x.status===200){try{var data=JSON.parse(x.responseText);
+      if(data.status==='ok'&&data.items&&data.items.length>0){
+        var html='',items=data.items.slice(0,6);
+        for(var i=0;i<items.length;i++){
+          var t=cleanTitle(items[i].title),lnk=items[i].link||'#',ago=timeAgo(new Date(items[i].pubDate));
+          html+='<a href="'+lnk+'" target="_blank" rel="noopener" style="display:block;padding:10px 12px;background:#18181c;border-radius:8px;text-decoration:none;transition:background .2s;" onmouseover="this.style.background=\'#202026\'" onmouseout="this.style.background=\'#18181c\'"><div style="font-size:12px;color:#ece9e2;line-height:1.4;margin-bottom:4px;">'+t+'</div><div style="font-size:9px;color:#5a5850;font-family:\'JetBrains Mono\',monospace;">'+ago+'</div></a>';
+        }
+        feed.innerHTML=html;
+        st.textContent='Updated '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});st.style.color='#5ecc7b';return;
+      }}catch(e){}}
+    feed.innerHTML='<div style="grid-column:span 3;padding:10px 12px;background:#18181c;border-radius:8px;font-size:12px;color:#e85d5d;">Failed \u2014 click refresh</div>';
+    st.textContent='Error';st.style.color='#e85d5d';
+  };
+  x.onerror=x.ontimeout=function(){btn.textContent='\u21BB Refresh';btn.style.opacity='1';};
+  x.send();
+}
+// Rolex: click refresh to load (no auto-load to save API calls)
+
+// === SIEMENS NEWS ===
+function loadSiemens(){
+  var btn=document.getElementById('siemens-refresh'),st=document.getElementById('siemens-status'),feed=document.getElementById('siemens-feed');
+  btn.textContent='\u21BB Loading...';btn.style.opacity='0.5';
+  var x=new XMLHttpRequest();
+  x.open('GET',R2J+encodeURIComponent('https://news.google.com/rss/search?q=Siemens+financial+services+energy&hl=en-US&gl=US&ceid=US:en'),true);
+  x.timeout=12000;
+  x.onload=function(){
+    btn.textContent='\u21BB Refresh';btn.style.opacity='1';
+    if(x.status===200){try{var data=JSON.parse(x.responseText);
+      if(data.status==='ok'&&data.items&&data.items.length>0){
+        var html='',items=data.items.slice(0,5);
+        for(var i=0;i<items.length;i++){
+          var t=cleanTitle(items[i].title),lnk=items[i].link||'#',ago=timeAgo(new Date(items[i].pubDate));
+          html+='<a href="'+lnk+'" target="_blank" rel="noopener" style="display:flex;justify-content:space-between;align-items:flex-start;padding:10px 12px;background:#18181c;border-radius:8px;text-decoration:none;transition:background .2s;gap:12px;" onmouseover="this.style.background=\'#202026\'" onmouseout="this.style.background=\'#18181c\'"><span style="font-size:13px;color:#ece9e2;line-height:1.4;flex:1;">'+t+'</span><span style="font-size:10px;color:#5a5850;font-family:\'JetBrains Mono\',monospace;white-space:nowrap;flex-shrink:0;">'+ago+'</span></a>';
+        }
+        feed.innerHTML=html;
+        st.textContent='Updated '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});st.style.color='#5ecc7b';return;
+      }}catch(e){}}
+    feed.innerHTML='<div style="padding:10px 12px;background:#18181c;border-radius:8px;font-size:13px;color:#e85d5d;">Failed \u2014 click refresh</div>';
+    st.textContent='Error';st.style.color='#e85d5d';
+  };
+  x.onerror=x.ontimeout=function(){btn.textContent='\u21BB Refresh';btn.style.opacity='1';};
+  x.send();
+}
+setTimeout(loadSiemens,25000);
+
+// === GAS PRICE NEWS ===
+function loadGas(){
+  var btn=document.getElementById('gas-refresh'),st=document.getElementById('gas-status'),feed=document.getElementById('gas-feed');
+  btn.textContent='\u21BB Loading...';btn.style.opacity='0.5';
+  var x=new XMLHttpRequest();
+  x.open('GET',R2J+encodeURIComponent('https://news.google.com/rss/search?q=gas+price+today+US&hl=en-US&gl=US&ceid=US:en'),true);
+  x.timeout=12000;
+  x.onload=function(){
+    btn.textContent='\u21BB Refresh';btn.style.opacity='1';
+    if(x.status===200){try{var data=JSON.parse(x.responseText);
+      if(data.status==='ok'&&data.items&&data.items.length>0){
+        var html='',items=data.items.slice(0,3);
+        for(var i=0;i<items.length;i++){
+          var t=cleanTitle(items[i].title),lnk=items[i].link||'#';
+          html+='<a href="'+lnk+'" target="_blank" rel="noopener" style="display:block;padding:8px 10px;background:#18181c;border-radius:7px;font-size:11px;color:#ece9e2;text-decoration:none;transition:background .2s;line-height:1.4;" onmouseover="this.style.background=\'#202026\'" onmouseout="this.style.background=\'#18181c\'">'+t+'</a>';
+        }
+        feed.innerHTML=html;
+        st.textContent='Updated '+new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true});st.style.color='#5ecc7b';return;
+      }}catch(e){}}
+    feed.innerHTML='<div class="stat-box" style="font-size:11px;color:#e85d5d;text-align:left;">Failed \u2014 click refresh</div>';
+    st.textContent='Error';st.style.color='#e85d5d';
+  };
+  x.onerror=x.ontimeout=function(){btn.textContent='\u21BB Refresh';btn.style.opacity='1';};
+  x.send();
+}
+// Gas: click refresh to load (no auto-load to save API calls)
+
+// === ISS TRACKER INFO ===
+function loadISS(){
+  var x=new XMLHttpRequest();
+  x.open('GET','https://api.wheretheiss.at/v1/satellites/25544',true);
+  x.timeout=8000;
+  x.onload=function(){
+    if(x.status===200){
+      try{
+        var d=JSON.parse(x.responseText);
+        var lat=parseFloat(d.latitude);
+        var lon=parseFloat(d.longitude);
+        var spd=Math.round(parseFloat(d.velocity)*0.621371);
+        var alt=Math.round(parseFloat(d.altitude)*0.621371);
+        document.getElementById('iss-info').textContent=lat.toFixed(2)+'\u00B0, '+lon.toFixed(2)+'\u00B0 \u00B7 '+spd+' mph \u00B7 '+alt+' mi alt';
+        var bbox=(lon-30)+','+(lat-20)+','+(lon+30)+','+(lat+20);
+        document.getElementById('iss-map').src='https://www.openstreetmap.org/export/embed.html?bbox='+bbox+'&layer=mapnik&marker='+lat+','+lon;
+      }catch(e){}
+    }
+  };
+  x.onerror=x.ontimeout=function(){};
+  x.send();
+}
+loadISS();
+setInterval(loadISS,15000);
+
+// === CRYPTO FEAR & GREED ===
+function loadFearGreed(){
+  var x=new XMLHttpRequest();
+  x.open('GET','https://api.alternative.me/fng/?limit=1',true);
+  x.timeout=10000;
+  x.onload=function(){
+    if(x.status===200){
+      try{
+        var data=JSON.parse(x.responseText);
+        var val=parseInt(data.data[0].value);
+        var cls=data.data[0].value_classification;
+        var colors={'Extreme Fear':'#e85d5d','Fear':'#e8975d','Neutral':'#c4a54d','Greed':'#8ecc5e','Extreme Greed':'#5ecc7b'};
+        var col=colors[cls]||'#c4a54d';
+        document.getElementById('fg-value').textContent=val;
+        document.getElementById('fg-value').setAttribute('fill',col);
+        document.getElementById('fg-label').textContent=cls;
+        document.getElementById('fg-label').style.color=col;
+        var arc=Math.round((val/100)*204);
+        document.getElementById('fg-arc').setAttribute('stroke-dasharray',arc+' 204');
+        document.getElementById('fg-arc').setAttribute('stroke',col);
+        document.getElementById('fg-updated').textContent='Updated daily';
+      }catch(e){}
+    }
+  };
+  x.onerror=x.ontimeout=function(){
+    document.getElementById('fg-label').textContent='Unavailable';
+  };
+  x.send();
+}
+loadFearGreed();
+
+// === THIS DAY IN HISTORY ===
+function loadHistory(){
+  var now=new Date();
+  var m=now.getMonth()+1,d=now.getDate();
+  var months=['','January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('history-date').textContent=months[m]+' '+d;
+  var x=new XMLHttpRequest();
+  x.open('GET','https://history.muffinlabs.com/date/'+m+'/'+d,true);
+  x.timeout=10000;
+  x.onload=function(){
+    if(x.status===200){
+      try{
+        var data=JSON.parse(x.responseText);
+        var events=data.data.Events;
+        if(events&&events.length>0){
+          var pick=[];
+          var step=Math.floor(events.length/5);
+          if(step<1)step=1;
+          for(var i=events.length-1;i>=0&&pick.length<5;i-=step){
+            pick.push(events[i]);
+          }
+          var html='';
+          for(var j=0;j<pick.length;j++){
+            var e=pick[j];
+            var year=e.year||'';
+            var text=e.text||'';
+            html+='<div style="padding:12px 0;border-bottom:1px solid #26262e;display:flex;gap:14px;align-items:flex-start;">';
+            html+='<div style="font-family:\'JetBrains Mono\',monospace;font-size:13px;color:#c4a54d;font-weight:500;min-width:50px;flex-shrink:0;">'+year+'</div>';
+            html+='<div style="font-size:13px;color:#ece9e2;line-height:1.5;">'+text+'</div>';
+            html+='</div>';
+          }
+          document.getElementById('history-feed').innerHTML=html;
+          return;
+        }
+      }catch(e){}
+    }
+    document.getElementById('history-feed').innerHTML='<div style="padding:12px 0;color:#5a5850;font-size:13px;">Unable to load</div>';
+  };
+  x.onerror=x.ontimeout=function(){
+    document.getElementById('history-feed').innerHTML='<div style="padding:12px 0;color:#5a5850;font-size:13px;">Unable to load</div>';
+  };
+  x.send();
+}
+loadHistory();
+
+// === QUOTES ===
+var quotes=[
+  {t:'\u201CThe details are not the details. They make the design.\u201D',a:'\u2014 Charles Eames'},
+  {t:'\u201CSpeed has never killed anyone. Suddenly becoming stationary, that\u2019s what gets you.\u201D',a:'\u2014 Jeremy Clarkson'},
+  {t:'\u201CA man with a watch knows what time it is. A man with two watches is never sure.\u201D',a:'\u2014 Segal\u2019s Law'},
+  {t:'\u201CThe stock market is a device for transferring money from the impatient to the patient.\u201D',a:'\u2014 Warren Buffett'},
+  {t:'\u201COnce you have tasted flight, you will forever walk the earth with your eyes turned skyward.\u201D',a:'\u2014 Leonardo da Vinci'},
+  {t:'\u201CSimplicity is the ultimate sophistication.\u201D',a:'\u2014 Leonardo da Vinci'}
+];
+var qi=0;
+setInterval(function(){
+  qi=(qi+1)%quotes.length;
+  var qt=document.getElementById('q-text'),qa=document.getElementById('q-author');
+  qt.style.opacity=0;qa.style.opacity=0;
+  setTimeout(function(){qt.textContent=quotes[qi].t;qa.textContent=quotes[qi].a;qt.style.opacity=1;qa.style.opacity=1;},400);
+},7000);
+</script>
+<script data-goatcounter="https://bilalaman.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
