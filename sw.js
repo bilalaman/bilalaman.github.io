@@ -1,4 +1,4 @@
-var CACHE='bilalaman-v1';
+var CACHE='bilalaman-v2';
 var ASSETS=['/','index.html'];
 
 self.addEventListener('install',function(e){
