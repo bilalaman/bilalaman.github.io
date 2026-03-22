@@ -66,7 +66,7 @@ body::before{content:'';position:fixed;inset:0;opacity:0;pointer-events:none;z-i
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 .shimmer{background:linear-gradient(90deg,var(--surface-2) 25%,var(--surface-3) 50%,var(--surface-2) 75%);background-size:200% 100%;animation:shimmer 1.5s ease infinite;border-radius:6px;height:14px;margin:4px 0}
 .card-label{font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:0.5px;color:var(--gold);margin-bottom:18px;font-weight:600}
-.profile{grid-column:span 8;animation:fadeUp .7s ease .1s both}
+.profile{grid-column:span 12;animation:fadeUp .7s ease .1s both}
 .profile-row{display:flex;gap:20px;align-items:center;margin-bottom:18px}
 .profile-bg{position:absolute;inset:0;background:linear-gradient(135deg,#e8e4dc 0%,#ffffff 30%,#f0ece4 60%,#e4e8f0 100%);z-index:0;overflow:hidden}
 .profile-bg::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at 30% 40%,#9a7d2e10 0%,transparent 50%),radial-gradient(circle at 70% 60%,#2d6cc010 0%,transparent 50%),radial-gradient(circle at 50% 80%,#2e8b4a08 0%,transparent 40%);animation:meshFloat 20s ease-in-out infinite}
@@ -122,7 +122,7 @@ body.light .interest-tag.g{background:rgba(154,125,46,0.08);color:#9a7d2e;border
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes gradientSlide{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@media(max-width:1024px){.profile{grid-column:span 6}.weather{grid-column:span 6}}
+@media(max-width:1024px){.weather{grid-column:span 6}}
 @media(max-width:640px){
 .grid{grid-template-columns:1fr}
 .grid>div{grid-column:span 1 !important}
@@ -241,7 +241,7 @@ body.dark .footer::before{background:#c4a54d}
 
     <!-- AMAN LOGO BANNER -->
     <div style="grid-column:span 12;display:flex;justify-content:center;padding:24px 0;background:linear-gradient(145deg,#c4a54d,#7c6a2e);border-radius:14px;animation:fadeUp .7s ease .18s both;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" style="width:150px;height:auto;" fill="none" role="img" aria-label="Aman logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" style="width:120px;height:auto;" fill="none" role="img" aria-label="Aman logo">
         <defs>
           <linearGradient id="aman-gold-grad" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stop-color="#B8976A"/>
@@ -249,21 +249,21 @@ body.dark .footer::before{background:#c4a54d}
             <stop offset="100%" stop-color="#B8976A"/>
           </linearGradient>
         </defs>
-        <path class="aman-draw" d="M18 100 L12 100 L12 98 L56 14" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
-        <path class="aman-draw aman-draw-d1" d="M60 14 L104 98 L104 100 L98 100" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
+        <path class="aman-draw" d="M18 100 L12 100 L12 98 L56 14" stroke="#08080a" stroke-width="3" stroke-linecap="round"/>
+        <path class="aman-draw aman-draw-d1" d="M60 14 L104 98 L104 100 L98 100" stroke="#08080a" stroke-width="3" stroke-linecap="round"/>
         <line class="aman-gold" x1="24" y1="88" x2="68" y2="88" stroke="#08080a" stroke-width="1.4" opacity="0.4"/>
         <line class="aman-gold" x1="40" y1="4" x2="72" y2="4" stroke="#08080a" stroke-width="1.6" opacity="0.4"/>
         <circle class="aman-gold-late" cx="130" cy="90" r="2" fill="#08080a" opacity="0.5"/>
-        <path class="aman-draw aman-draw-d1" d="M156 100 L156 16 L156 14 Q157 12 158 14 L198 72 L238 14 Q239 12 240 14 L240 16 L240 100" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
+        <path class="aman-draw aman-draw-d1" d="M156 100 L156 16 L156 14 Q157 12 158 14 L198 72 L238 14 Q239 12 240 14 L240 16 L240 100" stroke="#08080a" stroke-width="3" stroke-linecap="round"/>
         <path class="aman-gold-late" d="M198 72 L194 80 L202 80 Z" fill="#08080a" opacity="0.2"/>
         <circle class="aman-gold-late" cx="270" cy="90" r="2" fill="#08080a" opacity="0.5"/>
-        <path class="aman-draw aman-draw-d2" d="M298 100 L292 100 L292 98 L336 14" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
-        <path class="aman-draw aman-draw-d2" d="M340 14 L384 98 L384 100 L378 100" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
+        <path class="aman-draw aman-draw-d2" d="M298 100 L292 100 L292 98 L336 14" stroke="#08080a" stroke-width="3" stroke-linecap="round"/>
+        <path class="aman-draw aman-draw-d2" d="M340 14 L384 98 L384 100 L378 100" stroke="#08080a" stroke-width="3" stroke-linecap="round"/>
         <line class="aman-gold" x1="304" y1="88" x2="348" y2="88" stroke="#08080a" stroke-width="1.4" opacity="0.4"/>
         <circle class="aman-gold-late" cx="410" cy="90" r="2" fill="#08080a" opacity="0.5"/>
-        <path class="aman-draw aman-draw-d3" d="M446 100 L438 100 L438 98 L438 14" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
-        <path class="aman-draw aman-draw-d3" d="M440 16 Q468 60 496 98" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
-        <path class="aman-draw aman-draw-d3" d="M496 100 L496 98 L496 14 L496 12 L502 12" stroke="#08080a" stroke-width="1.8" stroke-linecap="round"/>
+        <path class="aman-draw aman-draw-d3" d="M446 100 L438 100 L438 98 L438 14" stroke="#08080a" stroke-width="3" stroke-linecap="round"/>
+        <path class="aman-draw aman-draw-d3" d="M440 16 Q468 60 496 98" stroke="#08080a" stroke-width="3" stroke-linecap="round"/>
+        <path class="aman-draw aman-draw-d3" d="M496 100 L496 98 L496 14 L496 12 L502 12" stroke="#08080a" stroke-width="3" stroke-linecap="round"/>
         <line class="aman-gold-late" x1="12" y1="108" x2="502" y2="108" stroke="#08080a" stroke-width="0.3" opacity="0.15"/>
       </svg>
     </div>
