@@ -406,6 +406,18 @@ body.dark .footer::before{background:#c4a54d}
     })();
     </script>
 
+    <!-- THIS DAY IN AVIATION -->
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .28s both;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="font-size:24px;">&#x2708;</div>
+        <div style="flex:1;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">This Day in Aviation</div>
+          <div id="aviation-today" style="font-size:13px;color:var(--text);line-height:1.6;margin-top:4px;">Loading...</div>
+          <div id="aviation-date" style="font-size:9px;color:var(--text-muted);margin-top:4px;font-family:'JetBrains Mono',monospace;"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="card weather">
       <div class="w-top">
         <div class="w-left">
@@ -500,6 +512,7 @@ body.dark .footer::before{background:#c4a54d}
     <!-- CNBC MARKET BRIEF -->
     <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .36s both;padding:0;overflow:hidden;">
       <div style="padding:18px 22px 0;">
+
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--text);">CNBC Market Brief</div>
@@ -520,6 +533,22 @@ body.dark .footer::before{background:#c4a54d}
           <div style="padding:12px;background:var(--surface-2);border-radius:8px;font-size:12px;color:var(--text-muted);">Loading...</div>
         </div>
         <div id="cnbc-ts" style="font-size:9px;color:var(--text-muted);margin-top:10px;text-align:right;">Source: CNBC RSS</div>
+      </div>
+    </div>
+
+    <!-- PORTFOLIO HEATMAP -->
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .37s both;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Market Heatmap</div>
+        <span id="heatmap-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
+      </div>
+      <div id="heatmap-grid" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <div class="stat-box" style="flex:1;min-width:80px;padding:12px 8px;text-align:center;" id="hm-spy"><div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">S&amp;P 500</div><div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;margin-top:4px;" class="loading-pulse">--</div></div>
+        <div class="stat-box" style="flex:1;min-width:80px;padding:12px 8px;text-align:center;" id="hm-qqq"><div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Nasdaq</div><div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;margin-top:4px;" class="loading-pulse">--</div></div>
+        <div class="stat-box" style="flex:1;min-width:80px;padding:12px 8px;text-align:center;" id="hm-gld"><div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Gold</div><div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;margin-top:4px;" class="loading-pulse">--</div></div>
+        <div class="stat-box" style="flex:1;min-width:80px;padding:12px 8px;text-align:center;" id="hm-uso"><div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Oil</div><div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;margin-top:4px;" class="loading-pulse">--</div></div>
+        <div class="stat-box" style="flex:1;min-width:80px;padding:12px 8px;text-align:center;" id="hm-btc"><div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Bitcoin</div><div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;margin-top:4px;" class="loading-pulse">--</div></div>
+        <div class="stat-box" style="flex:1;min-width:80px;padding:12px 8px;text-align:center;" id="hm-eur"><div style="font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">EUR/USD</div><div style="font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;margin-top:4px;" class="loading-pulse">--</div></div>
       </div>
     </div>
 
@@ -784,6 +813,21 @@ body.dark .footer::before{background:#c4a54d}
       <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">ICE BofA &#183; <a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">FRED &#8594;</a></div>
     </div>
 
+    <!-- NJ TRANSIT STATUS -->
+    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .41s both;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">&#x1F689; NJ Transit</div>
+        <span id="njt-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
+      </div>
+      <div id="njt-feed" style="display:flex;flex-direction:column;gap:6px;">
+        <div style="font-size:11px;color:var(--text-muted);text-align:center;padding:12px 0;">Loading alerts...</div>
+      </div>
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:8px;color:var(--text-muted);">RSS Feed</span>
+        <a href="https://www.njtransit.com/rail-alerts" target="_blank" rel="noopener" style="font-size:9px;color:var(--gold);text-decoration:none;">njtransit.com &#8594;</a>
+      </div>
+    </div>
+
     <!-- W&W COUNTDOWN -->
     <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .42s both;text-align:center;">
       <div class="card-label">&#x231A; Watches &amp; Wonders 2026</div>
@@ -990,6 +1034,7 @@ function refreshAll(){
   loadBluesky();loadFearGreed();loadCNBC();loadGas();
   loadAutoMarket();loadTreasury();loadHYSpread();
   loadMortgage();loadCCI();loadClaims();loadPakistan();
+  loadHeatmap();loadNJTransit();
   updateRisk();updateMarketStatus();
 }
 
@@ -2196,6 +2241,157 @@ function loadSunrise(){
 }
 loadSunrise();
 setInterval(loadSunrise,3600000);
+
+// === THIS DAY IN AVIATION ===
+(function(){
+  var events={
+    '0101':'1914: First scheduled airline flight — Tony Jannus flies St. Petersburg to Tampa, FL',
+    '0102':'1971: Boeing 747 enters commercial service with Pan Am',
+    '0107':'1785: Jean-Pierre Blanchard crosses the English Channel by balloon',
+    '0115':'1908: Frederick Baldwin flies the Red Wing — first public flight in North America',
+    '0127':'1926: John Logie Baird demonstrates television — broadcast from an aircraft follows',
+    '0204':'2005: Steve Fossett launches solo nonstop unrefueled flight around the world',
+    '0207':'1958: NACA becomes NASA — the space age begins',
+    '0209':'1969: First flight of the Boeing 747 — the aircraft that shrank the world',
+    '0220':'1962: John Glenn orbits the Earth three times aboard Friendship 7',
+    '0303':'1918: First airmail stamps issued by the US Post Office',
+    '0308':'2014: Malaysia Airlines Flight 370 disappears — largest aviation mystery',
+    '0310':'1927: US Army Air Corps established as a combat arm',
+    '0316':'1926: Robert Goddard launches the first liquid-fueled rocket',
+    '0322':'1963: Pakistan Air Force receives first F-104 Starfighter — Mach 2 era begins for PAF',
+    '0401':'1935: Radar first demonstrated for aircraft detection in the UK',
+    '0409':'1967: First flight of the Boeing 737 — most produced commercial jet in history',
+    '0412':'1961: Yuri Gagarin becomes the first human in space',
+    '0414':'1947: Chuck Yeager selected for X-1 program — will break the sound barrier',
+    '0415':'1953: First flight of the F-104 Starfighter — the missile with a man in it',
+    '0501':'1927: American Airlines founded',
+    '0520':'1927: Charles Lindbergh departs New York for Paris — solo transatlantic flight',
+    '0521':'1927: Lindbergh lands at Le Bourget — Spirit of St. Louis completes the crossing',
+    '0525':'1953: North American F-100 Super Sabre flies — first operational supersonic fighter',
+    '0601':'2009: Air France Flight 447 lost over the Atlantic',
+    '0610':'1944: PAF predecessor — Royal Indian Air Force forms No. 9 Squadron',
+    '0615':'2022: Last Boeing 747 rolls off the production line in Everett, WA',
+    '0704':'1947: First flight of the Hughes H-4 Hercules (Spruce Goose) taxi tests begin',
+    '0717':'1975: Apollo-Soyuz docking — first international crewed space mission',
+    '0720':'1969: Apollo 11 — Neil Armstrong walks on the Moon',
+    '0728':'1914: World War I begins — aviation enters warfare',
+    '0806':'1945: Enola Gay drops first atomic bomb — aviation changes the world forever',
+    '0812':'1955: Lockheed U-2 makes first flight — the spy plane era begins',
+    '0819':'2005: First flight of the F-22 Raptor in USAF operational service',
+    '0901':'1939: Germany invades Poland — WWII air campaigns begin',
+    '0907':'1965: PAF F-104 Starfighters engage in combat during the Indo-Pakistani War',
+    '0911':'2001: September 11 attacks — aviation security changes forever',
+    '0917':'1908: First fatal airplane crash — Lt. Thomas Selfridge killed at Fort Myer',
+    '1001':'1947: Chuck Yeager breaks the sound barrier in the Bell X-1',
+    '1004':'1957: Sputnik 1 launched — the Space Race begins',
+    '1014':'1947: Chuck Yeager achieves Mach 1.06 over Muroc Dry Lake',
+    '1025':'2003: Concorde makes its final commercial flight — end of supersonic travel',
+    '1102':'1947: Howard Hughes flies the Spruce Goose — its only flight',
+    '1110':'1983: Pakistan Air Force retires the last F-104 Starfighter from active service',
+    '1117':'1970: Boeing 747 sets passenger capacity record on a test flight',
+    '1201':'1955: Rosa Parks arrested — her case leads to desegregation of public transit',
+    '1203':'1992: First SMS text message sent — mobile communication era begins',
+    '1207':'1941: Pearl Harbor attacked — US enters WWII, aviation is decisive',
+    '1217':'1903: Wright Brothers achieve first powered flight at Kitty Hawk — 12 seconds that changed humanity'
+  };
+  var now=new Date();
+  var key=('0'+(now.getMonth()+1)).slice(-2)+('0'+now.getDate()).slice(-2);
+  var el=document.getElementById('aviation-today');
+  var dateEl=document.getElementById('aviation-date');
+  if(events[key]){
+    el.textContent=events[key];
+  }else{
+    el.textContent='1903: The age of flight begins with the Wright Brothers at Kitty Hawk — every day in aviation carries their legacy.';
+  }
+  dateEl.textContent=now.toLocaleDateString('en-US',{month:'long',day:'numeric'});
+})();
+
+// === PORTFOLIO HEATMAP (Twelve Data) ===
+function loadHeatmap(){
+  var symbols=[
+    {sym:'SPY',el:'hm-spy'},
+    {sym:'QQQ',el:'hm-qqq'},
+    {sym:'GLD',el:'hm-gld'},
+    {sym:'USO',el:'hm-uso'},
+    {sym:'BTC/USD',el:'hm-btc'},
+    {sym:'EUR/USD',el:'hm-eur'}
+  ];
+  var done=0;
+  symbols.forEach(function(s){
+    var xhr=new XMLHttpRequest();
+    xhr.open('GET','https://api.twelvedata.com/quote?symbol='+encodeURIComponent(s.sym)+'&apikey='+TWELVE_KEY,true);
+    xhr.timeout=8000;
+    xhr.onload=function(){
+      try{
+        var d=JSON.parse(xhr.responseText);
+        if(d.status==='error'){done++;return;}
+        var pct=parseFloat(d.percent_change||0);
+        var box=document.getElementById(s.el);
+        var valDiv=box.querySelector('div:last-child');
+        var sign=pct>=0?'+':'';
+        valDiv.textContent=sign+pct.toFixed(2)+'%';
+        clearPulse(valDiv);
+        // Color intensity based on magnitude
+        var abs=Math.abs(pct);
+        var intensity=Math.min(abs/3,1);
+        if(pct>=0){
+          box.style.background='rgba(46,139,74,'+intensity*0.15+')';
+          box.style.borderColor='rgba(46,139,74,'+intensity*0.3+')';
+          valDiv.style.color='var(--green)';
+        }else{
+          box.style.background='rgba(196,60,60,'+intensity*0.15+')';
+          box.style.borderColor='rgba(196,60,60,'+intensity*0.3+')';
+          valDiv.style.color='var(--red)';
+        }
+      }catch(e){}
+      done++;
+      if(done>=symbols.length){
+        var st=document.getElementById('heatmap-status');
+        st.textContent='\u2022 Live';st.style.color='#5ecc7b';clearPulse(st);
+      }
+    };
+    xhr.onerror=xhr.ontimeout=function(){
+      done++;
+      if(done>=symbols.length){
+        var st=document.getElementById('heatmap-status');
+        st.textContent='Offline';st.style.color='var(--text-muted)';clearPulse(st);
+      }
+    };
+    xhr.send();
+  });
+}
+setTimeout(loadHeatmap,3500);
+setInterval(loadHeatmap,300000);
+
+// === NJ TRANSIT STATUS ===
+function loadNJTransit(){
+  var rssUrl='https://www.njtransit.com/rss/RailAdvisories_feed.xml';
+  fetchViaProxy(rssUrl,
+    function(items){
+      var feed=document.getElementById('njt-feed');
+      if(items.length===0){
+        feed.innerHTML='<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--surface-2);border-radius:8px;"><span style="color:var(--green);font-size:14px;">\u2713</span><span style="font-size:11px;color:var(--text);">All lines operating normally</span></div>';
+      }else{
+        var h='';
+        var top=items.slice(0,3);
+        for(var i=0;i<top.length;i++){
+          var isDelay=top[i].title.toLowerCase().indexOf('delay')>-1||top[i].title.toLowerCase().indexOf('suspend')>-1;
+          var dot=isDelay?'<span style="color:var(--red);">\u25CF</span>':'<span style="color:var(--gold);">\u25CF</span>';
+          h+='<div style="display:flex;align-items:flex-start;gap:8px;padding:8px;background:var(--surface-2);border-radius:8px;font-size:11px;color:var(--text);line-height:1.4;">'+dot+'<span>'+top[i].title+'</span></div>';
+        }
+        feed.innerHTML=h;
+      }
+      var st=document.getElementById('njt-status');
+      st.textContent='\u2022 Live';st.style.color='#5ecc7b';clearPulse(st);
+    },
+    function(){
+      document.getElementById('njt-feed').innerHTML='<div style="font-size:11px;color:var(--text-muted);text-align:center;padding:12px 0;">Feed unavailable</div>';
+      var st=document.getElementById('njt-status');st.textContent='Offline';st.style.color='var(--text-muted)';clearPulse(st);
+    }
+  );
+}
+setTimeout(loadNJTransit,10000);
+setInterval(loadNJTransit,300000);
 
 // === REMOVE LOADING PULSE ===
 function clearPulse(el){if(el)el.classList.remove('loading-pulse');}
