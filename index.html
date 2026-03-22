@@ -122,43 +122,22 @@ body.light .interest-tag.g{background:rgba(154,125,46,0.08);color:#9a7d2e;border
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes gradientSlide{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@media(max-width:1024px){
-.grid>div[style*="span 4"]{grid-column:span 6 !important}
-.grid>div[style*="span 8"]{grid-column:span 12 !important}
-.weather{grid-column:span 6}
-.profile{grid-column:span 12 !important}
-}
-@media(max-width:768px){
-.grid>div{grid-column:span 12 !important}
-.weather{grid-column:span 12 !important}
-.header-right{flex-wrap:wrap;gap:6px}
-.header-right .pill{font-size:10px}
-.vsco-grid{grid-template-columns:repeat(2,1fr) !important}
-#cnbc-feed{grid-template-columns:repeat(2,1fr) !important}
-}
+@media(max-width:1024px){.profile{grid-column:span 12 !important}.weather{grid-column:span 6}}
 @media(max-width:640px){
 .grid{grid-template-columns:1fr}
 .grid>div{grid-column:span 1 !important}
 .header{flex-direction:column;align-items:flex-start;gap:12px}
-.header h1{font-size:36px}
-.header-right{justify-content:flex-start;gap:6px}
-.header-right .pill{padding:5px 10px;font-size:11px}
+.header-right{justify-content:flex-start;gap:6px;flex-wrap:wrap}
+.header-right .pill{padding:5px 10px;font-size:10px}
 .dash{padding:24px 16px 48px}
 .w-temp{font-size:44px}
 .w-details{grid-template-columns:repeat(2,1fr);gap:8px}
-.quote{padding:32px 24px}
-.quote .q-text{font-size:20px}
-.n-meta{flex-direction:column;align-items:flex-end;gap:4px}
 .social-pill{padding:8px 14px;font-size:12px}
-.ticker{padding:0 !important}
 .stat-box{padding:10px !important}
 #cnbc-feed{grid-template-columns:1fr !important}
 .vsco-grid{grid-template-columns:repeat(2,1fr) !important}
 .rolex-grid{gap:8px !important}
-.rolex-grid .stat-box{min-width:calc(50% - 4px) !important}
-.metar-row{flex-direction:column !important;gap:4px !important}
 .refresh-btn{padding:8px 14px !important;font-size:12px !important;min-height:36px}
-.card{padding:16px !important}
 }
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#f0eeea}::-webkit-scrollbar-thumb{background:#d4d0c8;border-radius:3px}
 body.dark{color:#ede8e3;--text-muted:#a89f96;--text-dim:#c4bdb5}
