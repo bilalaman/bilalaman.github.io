@@ -122,7 +122,20 @@ body.light .interest-tag.g{background:rgba(154,125,46,0.08);color:#9a7d2e;border
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes gradientSlide{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-@media(max-width:1024px){.weather{grid-column:span 6}}
+@media(max-width:1024px){
+.grid>div[style*="span 4"]{grid-column:span 6 !important}
+.grid>div[style*="span 8"]{grid-column:span 12 !important}
+.weather{grid-column:span 6}
+.profile{grid-column:span 12 !important}
+}
+@media(max-width:768px){
+.grid>div{grid-column:span 12 !important}
+.weather{grid-column:span 12 !important}
+.header-right{flex-wrap:wrap;gap:6px}
+.header-right .pill{font-size:10px}
+.vsco-grid{grid-template-columns:repeat(2,1fr) !important}
+#cnbc-feed{grid-template-columns:repeat(2,1fr) !important}
+}
 @media(max-width:640px){
 .grid{grid-template-columns:1fr}
 .grid>div{grid-column:span 1 !important}
