@@ -816,15 +816,18 @@ body.dark .footer::before{background:#c4a54d}
     <!-- NJ TRANSIT STATUS -->
     <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .41s both;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">&#x1F689; NJ Transit</div>
+        <div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">&#x1F689; NJ Transit</div>
+          <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Northeast Corridor &#183; New Brunswick</div>
+        </div>
         <span id="njt-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
       </div>
       <div id="njt-feed" style="display:flex;flex-direction:column;gap:6px;">
         <div style="font-size:11px;color:var(--text-muted);text-align:center;padding:12px 0;">Loading alerts...</div>
       </div>
       <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:8px;color:var(--text-muted);">RSS Feed</span>
-        <a href="https://www.njtransit.com/rail-alerts" target="_blank" rel="noopener" style="font-size:9px;color:var(--gold);text-decoration:none;">njtransit.com &#8594;</a>
+        <span style="font-size:8px;color:var(--text-muted);">Rail Advisories</span>
+        <a href="https://dv.njtransit.com/#/station/NB" target="_blank" rel="noopener" style="font-size:9px;color:var(--gold);text-decoration:none;">DepartureVision &#8594;</a>
       </div>
     </div>
 
@@ -2363,21 +2366,31 @@ function loadHeatmap(){
 setTimeout(loadHeatmap,3500);
 setInterval(loadHeatmap,300000);
 
-// === NJ TRANSIT STATUS ===
+// === NJ TRANSIT STATUS (Northeast Corridor) ===
 function loadNJTransit(){
   var rssUrl='https://www.njtransit.com/rss/RailAdvisories_feed.xml';
   fetchViaProxy(rssUrl,
     function(items){
       var feed=document.getElementById('njt-feed');
-      if(items.length===0){
-        feed.innerHTML='<div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--surface-2);border-radius:8px;"><span style="color:var(--green);font-size:14px;">\u2713</span><span style="font-size:11px;color:var(--text);">All lines operating normally</span></div>';
+      // Filter for NEC / Northeast Corridor / New Brunswick related alerts
+      var necItems=items.filter(function(item){
+        var t=(item.title+' '+(item.description||'')).toLowerCase();
+        return t.indexOf('northeast')>-1||t.indexOf('nec')>-1||t.indexOf('new brunswick')>-1||t.indexOf('trenton')>-1||t.indexOf('corridor')>-1||t.indexOf('all rail')>-1||t.indexOf('systemwide')>-1||t.indexOf('system-wide')>-1;
+      });
+      if(necItems.length===0&&items.length>0){
+        // No NEC-specific alerts but there are general alerts — show general
+        necItems=items.slice(0,2);
+      }
+      if(necItems.length===0){
+        feed.innerHTML='<div style="display:flex;align-items:center;gap:8px;padding:10px;background:var(--surface-2);border-radius:8px;"><span style="color:var(--green);font-size:14px;">&#x2713;</span><span style="font-size:11px;color:var(--text);">NEC line running normally</span></div>';
       }else{
         var h='';
-        var top=items.slice(0,3);
+        var top=necItems.slice(0,3);
         for(var i=0;i<top.length;i++){
-          var isDelay=top[i].title.toLowerCase().indexOf('delay')>-1||top[i].title.toLowerCase().indexOf('suspend')>-1;
+          var title=top[i].title;
+          var isDelay=title.toLowerCase().indexOf('delay')>-1||title.toLowerCase().indexOf('suspend')>-1||title.toLowerCase().indexOf('cancel')>-1;
           var dot=isDelay?'<span style="color:var(--red);">\u25CF</span>':'<span style="color:var(--gold);">\u25CF</span>';
-          h+='<div style="display:flex;align-items:flex-start;gap:8px;padding:8px;background:var(--surface-2);border-radius:8px;font-size:11px;color:var(--text);line-height:1.4;">'+dot+'<span>'+top[i].title+'</span></div>';
+          h+='<div style="display:flex;align-items:flex-start;gap:8px;padding:8px;background:var(--surface-2);border-radius:8px;font-size:11px;color:var(--text);line-height:1.4;">'+dot+'<span>'+title+'</span></div>';
         }
         feed.innerHTML=h;
       }
