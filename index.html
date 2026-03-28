@@ -119,6 +119,7 @@ body.light .interest-tag.g{background:rgba(154,125,46,0.08);color:#9a7d2e;border
 .social-pill:hover{border-color:var(--gold);color:var(--gold)}
 .social-pill:hover{border-color:#9a7d2e;transform:translateY(-2px)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 @keyframes gradientSlide{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
@@ -1044,12 +1045,19 @@ body.dark .footer::before{background:#c4a54d}
   </div>
   <div class="footer">
     <div id="visitor-count" style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:12px;letter-spacing:1px;">...</div>
+    <div id="sync-time" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);margin-bottom:12px;letter-spacing:.5px;">Last synced: --</div>
     bilalaman.com &#183; crafted with precision
   </div>
 </div>
 
 <script>
 // === REFRESH ALL ===
+function updateSyncTime(){
+  var now=new Date();
+  var t=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
+  var d=now.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  document.getElementById('sync-time').textContent='Last synced: '+d+' '+t;
+}
 function refreshAll(){
   var btn=document.getElementById('refresh-all-btn');
   btn.style.transform='rotate(360deg)';
@@ -1061,16 +1069,16 @@ function refreshAll(){
   loadMortgage();loadCCI();loadClaims();loadPakistan();
   loadHeatmap();loadNJTransit();loadMarchMadness();
   updateRisk();updateMarketStatus();
+  updateSyncTime();
 }
 
 // === PULL TO REFRESH (PWA / iOS standalone) ===
 (function(){
   var startY=0;var pulling=false;var indicator=null;
-  // Create pull indicator element
   indicator=document.createElement('div');
   indicator.id='pull-indicator';
-  indicator.style.cssText='position:fixed;top:-50px;left:50%;transform:translateX(-50%);z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:8px 20px;font-family:Cormorant Garamond,serif;font-size:13px;color:var(--gold);font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.1);transition:top .3s ease;pointer-events:none;';
-  indicator.textContent='\u21BB Refreshing...';
+  indicator.style.cssText='position:fixed;top:-60px;left:50%;transform:translateX(-50%);z-index:9999;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:10px 24px;font-family:Cormorant Garamond,serif;font-size:13px;color:var(--gold);font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.15);transition:top .3s ease;pointer-events:none;display:flex;align-items:center;gap:8px;';
+  indicator.innerHTML='<span id="pull-icon" style="display:inline-block;transition:transform .3s;">\u2193</span><span id="pull-text">Pull to refresh</span>';
   document.body.appendChild(indicator);
   document.addEventListener('touchstart',function(e){
     if(window.scrollY===0)startY=e.touches[0].clientY;
@@ -1078,27 +1086,43 @@ function refreshAll(){
   document.addEventListener('touchmove',function(e){
     if(startY>0&&window.scrollY===0){
       var diff=e.touches[0].clientY-startY;
-      if(diff>60&&diff<120&&!pulling){
-        indicator.textContent='\u2193 Pull to refresh';
-        indicator.style.top='10px';
+      var icon=document.getElementById('pull-icon');
+      var txt=document.getElementById('pull-text');
+      if(diff>40&&diff<120&&!pulling){
+        indicator.style.top='12px';
+        var progress=Math.min((diff-40)/80,1);
+        icon.style.transform='rotate('+Math.round(progress*180)+'deg)';
+        icon.textContent='\u2193';
+        txt.textContent='Pull to refresh';
       }
       if(diff>=120&&!pulling){
         pulling=true;
-        indicator.textContent='\u21BB Refreshing...';
-        indicator.style.top='10px';
+        icon.textContent='\u21BB';
+        icon.style.transform='rotate(0deg)';
+        icon.style.animation='spin .6s linear infinite';
+        txt.textContent='Syncing...';
+        indicator.style.top='12px';
         refreshAll();
         setTimeout(function(){
-          indicator.style.top='-50px';
-          pulling=false;
+          txt.textContent='Synced \u2713';
+          icon.style.animation='none';
+          icon.textContent='\u2713';
+          setTimeout(function(){
+            indicator.style.top='-60px';
+            pulling=false;
+          },1200);
         },2000);
       }
     }
   },{passive:true});
   document.addEventListener('touchend',function(){
     startY=0;
-    if(!pulling)indicator.style.top='-50px';
+    if(!pulling)indicator.style.top='-60px';
   },{passive:true});
 })();
+
+// Set initial sync time on page load
+window.addEventListener('load',function(){updateSyncTime();});
 
 // === CLOCK ===
 function tick(){
