@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="dns-prefetch" href="https://api.allorigins.win">
 <link rel="dns-prefetch" href="https://api.open-meteo.com">
-<link rel="dns-prefetch" href="https://api.stlouisfed.org">
+<link rel="dns-prefetch" href="https://bilalaman-api.bilal-aman.workers.dev">
 <link rel="dns-prefetch" href="https://public.api.bsky.app">
 <link rel="dns-prefetch" href="https://api.sunrise-sunset.org">
 <link rel="dns-prefetch" href="https://api.sunrisesunset.io">
@@ -1275,7 +1275,7 @@ setTimeout(loadAllAirports,6000);
 setInterval(loadAllAirports,300000);
 
 // === DOW JONES LIVE (via DIA ETF proxy) ===
-var TWELVE_KEY='ad56596eb5714b4db7b4b618a1964abd';
+var WORKER_API='https://bilalaman-api.bilal-aman.workers.dev';
 var DJI_FALLBACK={price:'47,098',chg:'+0.32'};
 function loadDow(){
   var done=false;var fails=0;var total=2;
@@ -1303,7 +1303,7 @@ function loadDow(){
   }
   // Source 1: Twelve Data /quote for DIA ETF (tracks Dow 1:1)
   var x1=new XMLHttpRequest();
-  x1.open('GET','https://api.twelvedata.com/quote?symbol=DIA&apikey='+TWELVE_KEY,true);
+  x1.open('GET',WORKER_API+'/api/twelve?symbol=DIA&endpoint=quote',true);
   x1.timeout=6000;
   x1.onload=function(){
     if(done)return;
@@ -1328,7 +1328,7 @@ function loadDow(){
   x1.send();
   // Source 2: Twelve Data /price for DIA ETF (lightweight backup)
   var x2=new XMLHttpRequest();
-  x2.open('GET','https://api.twelvedata.com/price?symbol=DIA&apikey='+TWELVE_KEY,true);
+  x2.open('GET',WORKER_API+'/api/twelve?symbol=DIA&endpoint=price',true);
   x2.timeout=6000;
   x2.onload=function(){
     if(done)return;
@@ -1907,7 +1907,7 @@ setTimeout(function(){
 },3000);
 
 // === AUTO MARKET PULSE (FRED Used Car CPI) ===
-var FRED_KEY='f1d25230e2d0699ba1a4377e2e34e86a';
+// API keys secured via Cloudflare Worker
 // Hardcoded fallback: update monthly when you check watchcharts
 var FRED_FALLBACK={value:'305.2',prev:'304.2',date:'Jan 2026'};
 function renderFRED(latest,prev,yr){
@@ -1927,7 +1927,7 @@ function renderFRED(latest,prev,yr){
   st.textContent='\u2022 Live';st.style.color='#5ecc7b';clearPulse(st);
 }
 function loadAutoMarket(){
-  var url='https://api.stlouisfed.org/fred/series/observations?series_id=CUSR0000SETA02&api_key='+FRED_KEY+'&file_type=json&sort_order=desc&limit=13';
+  var url=WORKER_API+'/api/fred?series=CUSR0000SETA02';
   // Try 3 methods in parallel — first to succeed wins
   var done=false;
   function tryXHR(pUrl,unwrap){
@@ -2091,7 +2091,7 @@ function loadTreasury(){
     }
   }
   series.forEach(function(s){
-    var url='https://api.stlouisfed.org/fred/series/observations?series_id='+s.id+'&api_key='+FRED_KEY+'&file_type=json&sort_order=desc&limit=5';
+    var url=WORKER_API+'/api/fred?series='+s.id;
     var proxies=[
       'https://api.allorigins.win/get?url='+encodeURIComponent(url),
       'https://corsproxy.io/?url='+encodeURIComponent(url)
@@ -2128,7 +2128,7 @@ setInterval(loadTreasury,1800000);
 // === HIGH YIELD BOND SPREAD (FRED: BAMLH0A0HYM2) ===
 var HY_FALLBACK={value:'3.15',prev:'3.22',date:'Mar 2026'};
 function loadHYSpread(){
-  var url='https://api.stlouisfed.org/fred/series/observations?series_id=BAMLH0A0HYM2&api_key='+FRED_KEY+'&file_type=json&sort_order=desc&limit=10';
+  var url=WORKER_API+'/api/fred?series=BAMLH0A0HYM2';
   var proxies=[
     'https://api.allorigins.win/get?url='+encodeURIComponent(url),
     'https://corsproxy.io/?url='+encodeURIComponent(url)
@@ -2368,7 +2368,7 @@ function loadHeatmap(){
   var done=0;
   symbols.forEach(function(s){
     var xhr=new XMLHttpRequest();
-    xhr.open('GET','https://api.twelvedata.com/quote?symbol='+encodeURIComponent(s.sym)+'&apikey='+TWELVE_KEY,true);
+    xhr.open('GET',WORKER_API+'/api/twelve?symbol='+encodeURIComponent(s.sym)+'&endpoint=quote',true);
     xhr.timeout=8000;
     xhr.onload=function(){
       try{
