@@ -423,95 +423,6 @@ body.dark .footer::before{background:#c4a54d}
     })();
     </script>
 
-    <!-- THIS DAY IN AVIATION -->
-    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .28s both;">
-      <div style="display:flex;align-items:center;gap:12px;">
-        <div style="font-size:24px;">&#x2708;</div>
-        <div style="flex:1;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">This Day in Aviation</div>
-          <div id="aviation-today" style="font-size:13px;color:var(--text);line-height:1.6;margin-top:4px;">Loading...</div>
-          <div id="aviation-date" style="font-size:9px;color:var(--text-muted);margin-top:4px;font-family:'JetBrains Mono',monospace;"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card weather">
-      <div class="w-top">
-        <div class="w-left">
-          <div style="position:relative;width:56px;height:56px;flex-shrink:0;">
-            <svg id="w-anim" viewBox="0 0 64 64" width="56" height="56">
-              <circle cx="32" cy="32" r="12" fill="#f5c842" opacity="0.9">
-                <animate attributeName="r" values="12;13.5;12" dur="3s" repeatCount="indefinite"/>
-              </circle>
-              <g opacity="0.3">
-                <line x1="32" y1="8" x2="32" y2="15" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
-                <line x1="32" y1="49" x2="32" y2="56" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
-                <line x1="8" y1="32" x2="15" y2="32" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
-                <line x1="49" y1="32" x2="56" y2="32" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
-                <animateTransform attributeName="transform" type="rotate" from="0 32 32" to="360 32 32" dur="30s" repeatCount="indefinite"/>
-              </g>
-            </svg>
-          </div>
-          <div>
-            <div class="w-temp" id="w-temp">--&#176;</div>
-          </div>
-        </div>
-        <div class="w-meta">
-          <div class="w-city">New York City</div>
-          <div class="w-desc" id="w-desc">Loading...</div>
-        </div>
-      </div>
-      <div class="w-details">
-        <div class="w-det">Feels<span id="w-feels">--&#176;</span></div>
-        <div class="w-det">Wind<span id="w-wind">--</span></div>
-        <div class="w-det">Humid<span id="w-hum">--%</span></div>
-        <div class="w-det">Hi / Lo<span id="w-hl">--/--</span></div>
-      </div>
-    </div>
-
-    <!-- SUNRISE / SUNSET -->
-    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .31s both;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Sunrise &amp; Sunset</div>
-        <span id="sun-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
-      </div>
-      <div style="display:flex;gap:14px;align-items:center;">
-        <div style="text-align:center;flex:1;">
-          <div style="font-size:20px;margin-bottom:4px;">&#x1F305;</div>
-          <div id="sun-rise" style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--text);" class="loading-pulse">--:--</div>
-          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Sunrise</div>
-        </div>
-        <div style="width:1px;height:36px;background:var(--border);"></div>
-        <div style="text-align:center;flex:1;">
-          <div style="font-size:20px;margin-bottom:4px;">&#x1F307;</div>
-          <div id="sun-set" style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--text);" class="loading-pulse">--:--</div>
-          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Sunset</div>
-        </div>
-      </div>
-      <div id="sun-daylight" style="font-size:10px;color:var(--text-muted);margin-top:10px;text-align:center;">--</div>
-      <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">Newark, NJ &#183; sunrise-sunset.org</div>
-    </div>
-
-    <!-- BLUESKY FEED -->
-    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .32s both;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <svg width="18" height="18" viewBox="0 0 600 530" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M135.72 44.03C202.22 93.87 273.88 195.16 300 249.22C326.12 195.16 397.78 93.87 464.28 44.03C512.74 7.78 590 -19.22 590 68.28C590 85.78 580.56 222.28 575 243.28C556.82 310.28 486.82 327.07 423.94 316.28C534.18 335.78 564.06 401.28 499 467.28C363.94 604.51 308.94 452.97 301.56 429.28C300.56 426.28 300.06 424.97 300 425.53C299.94 424.97 299.44 426.28 298.44 429.28C291.06 452.97 236.06 604.51 101 467.28C35.94 401.28 65.82 335.78 176.06 316.28C113.18 327.07 43.18 310.28 25 243.28C19.44 222.28 10 85.78 10 68.28C10 -19.22 87.26 7.78 135.72 44.03Z" fill="var(--gold)"/></svg>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Bluesky</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span id="bsky-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
-          <button class="refresh-btn" onclick="loadBluesky()" aria-label="Refresh Bluesky" style="font-size:9px;padding:3px 8px;">&#8635;</button>
-        </div>
-      </div>
-      <div id="bsky-feed" style="display:flex;flex-direction:column;gap:10px;">
-        <div style="font-size:12px;color:var(--text-muted);text-align:center;padding:20px 0;">Loading posts...</div>
-      </div>
-      <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);text-align:center;">
-        <a href="https://bsky.app/profile/bilalaman.bsky.social" target="_blank" rel="noopener" style="font-size:10px;color:var(--gold);text-decoration:none;font-family:'Cormorant Garamond',serif;font-weight:600;">@bilalaman &#8594;</a>
-      </div>
-    </div>
-
     <!-- MARKET OVERVIEW -->
     <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .35s both;padding:0;overflow:hidden;position:relative;">
       <div style="padding:18px 22px 0;">
@@ -787,87 +698,92 @@ body.dark .footer::before{background:#c4a54d}
       <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">BLS &#183; Seasonally Adj &#183; <a href="https://fred.stlouisfed.org/series/CUSR0000SETA02" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">FRED &#8594;</a></div>
     </div>
 
-    <!-- TREASURY YIELDS -->
-    <div class="card" style="grid-column:span 4;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Treasury Yields</div>
-        <span id="tsy-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
-      </div>
-      <div id="tsy-10y" style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--text);line-height:1;" class="loading-pulse">--%</div>
-      <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">10-Year Note</div>
-      <div style="display:flex;gap:8px;margin-top:10px;">
-        <div class="stat-box" style="flex:1;padding:8px;">
-          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">2-Yr</div>
-          <div id="tsy-2y" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--text);margin-top:2px;">--</div>
-        </div>
-        <div class="stat-box" style="flex:1;padding:8px;">
-          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">30-Yr</div>
-          <div id="tsy-30y" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--text);margin-top:2px;">--</div>
+    <!-- THIS DAY IN AVIATION -->
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .28s both;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="font-size:24px;">&#x2708;</div>
+        <div style="flex:1;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">This Day in Aviation</div>
+          <div id="aviation-today" style="font-size:13px;color:var(--text);line-height:1.6;margin-top:4px;">Loading...</div>
+          <div id="aviation-date" style="font-size:9px;color:var(--text-muted);margin-top:4px;font-family:'JetBrains Mono',monospace;"></div>
         </div>
       </div>
-      <div id="tsy-spread" style="font-size:9px;color:var(--text-muted);margin-top:8px;text-align:center;">--</div>
-      <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">Fed Reserve &#183; <a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">FRED &#8594;</a></div>
     </div>
 
-    <!-- HIGH YIELD BOND SPREAD -->
-    <div class="card" style="grid-column:span 4;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Credit Spread</div>
-        <span id="hy-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
-      </div>
-      <div id="hy-val" style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--text);line-height:1;" class="loading-pulse">--%</div>
-      <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">HY OAS vs Treasury</div>
-      <div style="display:flex;gap:8px;margin-top:10px;">
-        <div class="stat-box" style="flex:1;padding:8px;">
-          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Prior</div>
-          <div id="hy-prev" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--text);margin-top:2px;">--</div>
+    <div class="card weather">
+      <div class="w-top">
+        <div class="w-left">
+          <div style="position:relative;width:56px;height:56px;flex-shrink:0;">
+            <svg id="w-anim" viewBox="0 0 64 64" width="56" height="56">
+              <circle cx="32" cy="32" r="12" fill="#f5c842" opacity="0.9">
+                <animate attributeName="r" values="12;13.5;12" dur="3s" repeatCount="indefinite"/>
+              </circle>
+              <g opacity="0.3">
+                <line x1="32" y1="8" x2="32" y2="15" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
+                <line x1="32" y1="49" x2="32" y2="56" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
+                <line x1="8" y1="32" x2="15" y2="32" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
+                <line x1="49" y1="32" x2="56" y2="32" stroke="#f5c842" stroke-width="2" stroke-linecap="round"/>
+                <animateTransform attributeName="transform" type="rotate" from="0 32 32" to="360 32 32" dur="30s" repeatCount="indefinite"/>
+              </g>
+            </svg>
+          </div>
+          <div>
+            <div class="w-temp" id="w-temp">--&#176;</div>
+          </div>
         </div>
-        <div class="stat-box" style="flex:1;padding:8px;">
-          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Signal</div>
-          <div id="hy-signal" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--green);margin-top:2px;">--</div>
+        <div class="w-meta">
+          <div class="w-city">New York City</div>
+          <div class="w-desc" id="w-desc">Loading...</div>
         </div>
       </div>
-      <div id="hy-context" style="font-size:9px;color:var(--text-muted);margin-top:8px;text-align:center;">--</div>
-      <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">ICE BofA &#183; <a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">FRED &#8594;</a></div>
+      <div class="w-details">
+        <div class="w-det">Feels<span id="w-feels">--&#176;</span></div>
+        <div class="w-det">Wind<span id="w-wind">--</span></div>
+        <div class="w-det">Humid<span id="w-hum">--%</span></div>
+        <div class="w-det">Hi / Lo<span id="w-hl">--/--</span></div>
+      </div>
     </div>
 
-    <!-- MARCH MADNESS 2026 -->
-    <div class="card" style="grid-column:span 8;animation:fadeUp .7s ease .41s both;">
+    <!-- SUNRISE / SUNSET -->
+    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .31s both;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Sunrise &amp; Sunset</div>
+        <span id="sun-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center;">
+        <div style="text-align:center;flex:1;">
+          <div style="font-size:20px;margin-bottom:4px;">&#x1F305;</div>
+          <div id="sun-rise" style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--text);" class="loading-pulse">--:--</div>
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Sunrise</div>
+        </div>
+        <div style="width:1px;height:36px;background:var(--border);"></div>
+        <div style="text-align:center;flex:1;">
+          <div style="font-size:20px;margin-bottom:4px;">&#x1F307;</div>
+          <div id="sun-set" style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--text);" class="loading-pulse">--:--</div>
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Sunset</div>
+        </div>
+      </div>
+      <div id="sun-daylight" style="font-size:10px;color:var(--text-muted);margin-top:10px;text-align:center;">--</div>
+      <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">Newark, NJ &#183; sunrise-sunset.org</div>
+    </div>
+
+    <!-- BLUESKY FEED -->
+    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .32s both;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">&#x1F3C0; March Madness 2026</div>
-          <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">NCAA Tournament &#183; <span id="mm-round">Loading...</span></div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <svg width="18" height="18" viewBox="0 0 600 530" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M135.72 44.03C202.22 93.87 273.88 195.16 300 249.22C326.12 195.16 397.78 93.87 464.28 44.03C512.74 7.78 590 -19.22 590 68.28C590 85.78 580.56 222.28 575 243.28C556.82 310.28 486.82 327.07 423.94 316.28C534.18 335.78 564.06 401.28 499 467.28C363.94 604.51 308.94 452.97 301.56 429.28C300.56 426.28 300.06 424.97 300 425.53C299.94 424.97 299.44 426.28 298.44 429.28C291.06 452.97 236.06 604.51 101 467.28C35.94 401.28 65.82 335.78 176.06 316.28C113.18 327.07 43.18 310.28 25 243.28C19.44 222.28 10 85.78 10 68.28C10 -19.22 87.26 7.78 135.72 44.03Z" fill="var(--gold)"/></svg>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Bluesky</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span id="mm-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
-          <button class="refresh-btn" onclick="loadMarchMadness()" style="font-size:9px;padding:3px 10px;">&#8635;</button>
-          <a href="https://www.ncaa.com/march-madness-live/bracket" target="_blank" rel="noopener" style="font-size:9px;color:var(--gold);text-decoration:none;font-family:'Cormorant Garamond',serif;font-weight:600;">Bracket &#8594;</a>
+          <span id="bsky-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
+          <button class="refresh-btn" onclick="loadBluesky()" aria-label="Refresh Bluesky" style="font-size:9px;padding:3px 8px;">&#8635;</button>
         </div>
       </div>
-      <div id="mm-games" style="display:flex;flex-direction:column;gap:6px;">
-        <div style="font-size:11px;color:var(--text-muted);text-align:center;padding:16px 0;">Loading games...</div>
+      <div id="bsky-feed" style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:12px;color:var(--text-muted);text-align:center;padding:20px 0;">Loading posts...</div>
       </div>
-      <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:9px;color:var(--text-muted);">Final Four &#183; Apr 4 &#183; Indianapolis</span>
-        <span id="mm-update-time" style="font-size:8px;color:var(--text-muted);"></span>
-      </div>
-    </div>
-
-    <!-- NJ TRANSIT STATUS -->
-    <div class="card" style="grid-column:span 4;animation:fadeUp .7s ease .41s both;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-        <div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">&#x1F689; NJ Transit</div>
-          <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Northeast Corridor &#183; New Brunswick</div>
-        </div>
-        <span id="njt-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
-      </div>
-      <div id="njt-feed" style="display:flex;flex-direction:column;gap:6px;">
-        <div style="font-size:11px;color:var(--text-muted);text-align:center;padding:12px 0;">Loading alerts...</div>
-      </div>
-      <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:8px;color:var(--text-muted);">Rail Advisories</span>
-        <a href="https://dv.njtransit.com/#/station/NB" target="_blank" rel="noopener" style="font-size:9px;color:var(--gold);text-decoration:none;">DepartureVision &#8594;</a>
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);text-align:center;">
+        <a href="https://bsky.app/profile/bilalaman.bsky.social" target="_blank" rel="noopener" style="font-size:10px;color:var(--gold);text-decoration:none;font-family:'Cormorant Garamond',serif;font-weight:600;">@bilalaman &#8594;</a>
       </div>
     </div>
 
@@ -967,31 +883,31 @@ body.dark .footer::before{background:#c4a54d}
         </div>
         <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
           <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">GMT Pepsi 126710BLRO</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$18,500</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$24,000</div>
           <div style="font-size:10px;color:var(--green);margin-top:3px;">&#9650; 2.1% vs 6mo</div>
           <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Retail: $11,300</div>
         </div>
         <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
           <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Daytona 126500LN</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$28,500</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$29,000</div>
           <div style="font-size:10px;color:var(--green);margin-top:3px;">&#9650; 3.8% vs 6mo</div>
           <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Retail: $15,400</div>
         </div>
         <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
           <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">OP 39 114300</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$7,800</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$9,000</div>
           <div style="font-size:10px;color:var(--green);margin-top:3px;">&#9650; 6.4% vs 1yr</div>
           <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Retail: $5,800 (disc.)</div>
         </div>
         <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
           <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">GMT Batman 126710BLNR</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$14,200</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$16,000</div>
           <div style="font-size:10px;color:var(--green);margin-top:3px;">&#9650; 7.6% vs 1yr</div>
           <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Retail: $11,800</div>
         </div>
         <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
           <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Sea-Dweller 126600</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$13,800</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$14,500</div>
           <div style="font-size:10px;color:var(--green);margin-top:3px;">&#9650; 5.2% vs 1yr</div>
           <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Retail: $12,550</div>
         </div>
@@ -1009,7 +925,7 @@ body.dark .footer::before{background:#c4a54d}
         </div>
         <div class="stat-box" style="flex:1;min-width:120px;text-align:left;padding:14px;">
           <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">OP 41 124300</div>
-          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$8,300</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:500;color:var(--text);">$10,000</div>
           <div style="font-size:10px;color:var(--green);margin-top:3px;">&#9650; 2.4% vs 1yr</div>
           <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">Retail: $6,800</div>
         </div>
@@ -1017,8 +933,8 @@ body.dark .footer::before{background:#c4a54d}
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
         <div>
           <span style="font-size:11px;color:var(--text-muted);">Collection Value &#183;</span>
-          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--text);margin-left:6px;">$136,000</span>
-          <span style="font-size:10px;color:var(--text-muted);margin-left:4px;">&#183; 9 watches &#183; Mar 2026</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--text);margin-left:6px;">$147,400</span>
+          <span style="font-size:10px;color:var(--text-muted);margin-left:4px;">&#183; 9 watches &#183; Apr 2026</span>
         </div>
         <a href="https://watchcharts.com/watches/brand/rolex" target="_blank" rel="noopener" style="font-size:11px;color:var(--gold);text-decoration:none;">WatchCharts &#8594;</a>
       </div>
@@ -1084,7 +1000,7 @@ function refreshAll(){
   loadBluesky();loadFearGreed();loadCNBC();loadGas();
   loadAutoMarket();loadTreasury();loadHYSpread();
   loadMortgage();loadCCI();loadClaims();loadPakistan();
-  loadHeatmap();loadNJTransit();loadMarchMadness();loadBrief();
+  loadHeatmap();loadBrief();
   updateRisk();updateMarketStatus();
   updateSyncTime();
 }
