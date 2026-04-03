@@ -264,19 +264,26 @@ body.dark .footer::before{background:#c4a54d}
     <!-- THOUGHTS -->
 
     <!-- MORNING BRIEF -->
-    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .19s both;border-left:3px solid var(--gold);">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--gold);">Morning Brief</div>
-          <div style="display:flex;align-items:center;gap:4px;"><div class="dot-live" style="width:6px;height:6px;"></div><span style="font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;">Live</span></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span id="brief-time" style="font-size:8px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;"></span>
-          <button class="refresh-btn" onclick="loadBrief()" style="font-size:9px;padding:3px 10px;">&#8635;</button>
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .19s both;padding:0;overflow:hidden;">
+      <div style="background:linear-gradient(145deg,#c4a54d12,#7c6a2e08);padding:20px 24px 16px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(145deg,#c4a54d,#7c6a2e);display:flex;align-items:center;justify-content:center;"><span style="font-size:14px;">&#x1F4CA;</span></div>
+            <div>
+              <div style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;color:var(--text);letter-spacing:0.3px;">Morning Brief</div>
+              <div style="font-size:9px;color:var(--text-muted);margin-top:1px;font-family:'JetBrains Mono',monospace;"><span id="brief-time">--</span> &#183; Cloudflare Edge</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="display:flex;align-items:center;gap:4px;"><div class="dot-live" style="width:5px;height:5px;"></div><span style="font-size:8px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;">Live</span></div>
+            <button class="refresh-btn" onclick="loadBrief()" style="font-size:9px;padding:3px 10px;">&#8635;</button>
+          </div>
         </div>
       </div>
-      <div id="brief-content" style="font-size:13px;color:var(--text);line-height:1.7;" class="loading-pulse">Generating brief...</div>
-      <div id="brief-data" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"></div>
+      <div style="padding:20px 24px;">
+        <div id="brief-content" style="font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--text);line-height:1.8;letter-spacing:0.2px;" class="loading-pulse">Generating brief...</div>
+        <div id="brief-data" style="display:flex;gap:6px;margin-top:16px;flex-wrap:wrap;"></div>
+      </div>
     </div>
     <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .22s both;">
       <div style="display:flex;align-items:flex-start;gap:16px;">
@@ -2245,15 +2252,15 @@ function loadBrief(){
       if(d.data){
         var h='';
         var items=[
-          {label:'S&P',val:d.data.spy_pct+'%',pos:parseFloat(d.data.spy_pct)>=0},
-          {label:'DJI',val:d.data.dia_pct+'%',pos:parseFloat(d.data.dia_pct)>=0},
-          {label:'10Y',val:d.data.ten_yr+'%'},
-          {label:'HY',val:d.data.hy_spread+'%'},
+          {label:'S&P 500',val:(parseFloat(d.data.spy_pct)>=0?'+':'')+d.data.spy_pct+'%',pos:parseFloat(d.data.spy_pct)>=0},
+          {label:'Dow Jones',val:(parseFloat(d.data.dia_pct)>=0?'+':'')+d.data.dia_pct+'%',pos:parseFloat(d.data.dia_pct)>=0},
+          {label:'10Y Yield',val:d.data.ten_yr+'%'},
+          {label:'HY Spread',val:d.data.hy_spread+'%'},
           {label:'Claims',val:d.data.claims+'K'}
         ];
         items.forEach(function(it){
-          var color=it.pos!==undefined?(it.pos?'var(--green)':'var(--red)'):'var(--text-muted)';
-          h+='<div style="padding:4px 10px;background:var(--surface-2);border-radius:6px;font-family:JetBrains Mono,monospace;font-size:10px;"><span style="color:var(--text-muted);">'+it.label+'</span> <span style="color:'+color+';font-weight:600;">'+it.val+'</span></div>';
+          var color=it.pos!==undefined?(it.pos?'var(--green)':'var(--red)'):'var(--gold)';
+          h+='<div style="padding:6px 14px;background:var(--surface-2);border-radius:8px;border:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:10px;display:flex;align-items:center;gap:6px;"><span style="color:var(--text-muted);font-size:9px;">'+it.label+'</span><span style="color:'+color+';font-weight:600;">'+it.val+'</span></div>';
         });
         pills.innerHTML=h;
       }
