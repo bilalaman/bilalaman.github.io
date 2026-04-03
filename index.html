@@ -1309,8 +1309,11 @@ function loadFromWorker(){
           else{chgEl.textContent='\u25BC'+Math.abs(pct).toFixed(2)+'%';chgEl.style.color='var(--red)';}
         }
       }else{
-        // Markets closed — use fallback or try individual loader
-        loadDow();
+        // Markets closed — show fallback
+        var valEl=document.getElementById('dow-val');
+        valEl.textContent=DJI_FALLBACK.price;clearPulse(valEl);
+        var chgEl=document.getElementById('dow-chg');
+        chgEl.textContent='Closed';chgEl.style.color='var(--text-muted)';
       }
 
       // --- Heatmap ---
@@ -1345,8 +1348,13 @@ function loadFromWorker(){
           hmSt.textContent='\u2022 Live';hmSt.style.color='#5ecc7b';clearPulse(hmSt);
         }
       }else{
-        // Markets closed — try individual heatmap loader
-        loadHeatmap();
+        // Markets closed — show closed state
+        var hmSt=document.getElementById('heatmap-status');
+        hmSt.textContent='Markets Closed';hmSt.style.color='var(--text-muted)';clearPulse(hmSt);
+        ['hm-spy','hm-qqq','hm-gld','hm-uso','hm-btc','hm-eur'].forEach(function(id){
+          var box=document.getElementById(id);
+          if(box){var v=box.querySelector('div:last-child');v.textContent='--';clearPulse(v);}
+        });
       }
       if(d.treasury){
         var tsySt=document.getElementById('tsy-status');
