@@ -1031,14 +1031,12 @@ function refreshAll(){
   var btn=document.getElementById('refresh-all-btn');
   btn.style.transform='rotate(360deg)';
   setTimeout(function(){btn.style.transform='';},600);
-  // Fire all loaders
-  loadWeather();loadSunrise();loadDow();loadAllMETAR();loadAllAirports();
-  loadBluesky();loadFearGreed();loadCNBC();loadGas();
-  loadAutoMarket();loadTreasury();loadHYSpread();
+  // Worker handles: DJI, Treasury, HY, UsedCar, METAR, Bluesky, Sunrise, F&G, Brief
+  loadFromWorker();
+  // Direct calls for widgets not in worker
+  loadWeather();loadAllAirports();loadCNBC();loadGas();
   loadMortgage();loadCCI();loadClaims();loadPakistan();
-  loadHeatmap();loadBrief();
   updateRisk();updateMarketStatus();
-  updateSyncTime();
 }
 
 // === PULL TO REFRESH (PWA / iOS standalone) ===
@@ -1246,6 +1244,200 @@ setInterval(loadAllAirports,300000);
 // === DOW JONES LIVE (via DIA ETF proxy) ===
 var WORKER_API='https://bilalaman-api.bilal-aman.workers.dev';
 var DJI_FALLBACK={price:'47,098',chg:'+0.32'};
+
+// === UNIFIED WORKER LOAD — one call, all data ===
+function loadFromWorker(){
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',WORKER_API+'/api/all',true);
+  xhr.timeout=10000;
+  xhr.onload=function(){
+    try{
+      var d=JSON.parse(xhr.responseText);
+
+      // --- DJI ---
+      if(d.dji&&d.dji.value){
+        var valEl=document.getElementById('dow-val');
+        valEl.textContent=d.dji.value.toLocaleString();clearPulse(valEl);
+        var chgEl=document.getElementById('dow-chg');
+        var pct=parseFloat(d.dji.change_pct);
+        if(!isNaN(pct)&&pct!==0){
+          if(pct>=0){chgEl.textContent='\u25B2'+Math.abs(pct).toFixed(2)+'%';chgEl.style.color='var(--green)';}
+          else{chgEl.textContent='\u25BC'+Math.abs(pct).toFixed(2)+'%';chgEl.style.color='var(--red)';}
+        }
+      }
+
+      // --- Treasury Yields ---
+      if(d.treasury){
+        var tsySt=document.getElementById('tsy-status');
+        var gotTsy=false;
+        ['DGS10','DGS2','DGS30'].forEach(function(key){
+          var elMap={DGS10:'tsy-10y',DGS2:'tsy-2y',DGS30:'tsy-30y'};
+          if(d.treasury[key]){
+            var el=document.getElementById(elMap[key]);
+            el.textContent=d.treasury[key].value.toFixed(2)+'%';clearPulse(el);
+            gotTsy=true;
+          }
+        });
+        if(gotTsy){
+          tsySt.textContent='\u2022 Live';tsySt.style.color='#5ecc7b';clearPulse(tsySt);
+          if(d.treasury.DGS10&&d.treasury.DGS2){
+            var spread=(d.treasury.DGS10.value-d.treasury.DGS2.value).toFixed(2);
+            var color=spread>=0?'var(--green)':'var(--red)';
+            var label=spread>=0?'Normal':'Inverted';
+            document.getElementById('tsy-spread').innerHTML='10Y-2Y Spread: <span style="color:'+color+';font-weight:500;">'+spread+'% ('+label+')</span>';
+          }
+        }
+      }
+
+      // --- HY Spread ---
+      if(d.hy){
+        var hyEl=document.getElementById('hy-val');
+        hyEl.textContent=d.hy.value.toFixed(2)+'%';clearPulse(hyEl);
+        var hyPrev=document.getElementById('hy-prev');
+        if(d.hy.prev)hyPrev.textContent=d.hy.prev.toFixed(2)+'%';
+        var sigEl=document.getElementById('hy-signal');
+        var ctxEl=document.getElementById('hy-context');
+        if(d.hy.value<3){sigEl.textContent='Calm';sigEl.style.color='var(--green)';ctxEl.textContent='Credit markets relaxed';}
+        else if(d.hy.value<4){sigEl.textContent='Normal';sigEl.style.color='var(--blue)';ctxEl.textContent='Spreads in healthy range';}
+        else if(d.hy.value<5){sigEl.textContent='Elevated';sigEl.style.color='var(--orange)';ctxEl.textContent='Credit tightening';}
+        else{sigEl.textContent='Stress';sigEl.style.color='var(--red)';ctxEl.textContent='Credit markets under pressure';}
+        var hySt=document.getElementById('hy-status');
+        hySt.textContent='\u2022 Live';hySt.style.color='#5ecc7b';clearPulse(hySt);
+      }
+
+      // --- Used Car CPI ---
+      if(d.usedCar){
+        var valEl=document.getElementById('auto-used-val');
+        valEl.textContent=d.usedCar.value;clearPulse(valEl);
+        if(d.usedCar.prev){
+          var curr=parseFloat(d.usedCar.value),prev=parseFloat(d.usedCar.prev);
+          var chg=((curr-prev)/prev*100).toFixed(1);
+          var dir=chg>=0?'\u25B2':'\u25BC';
+          var col=chg>=0?'var(--green)':'var(--red)';
+          document.getElementById('auto-used-chg').innerHTML='<span style="color:'+col+';">'+dir+' '+Math.abs(chg)+'% MoM</span>';
+        }
+        var autoSt=document.getElementById('auto-status');
+        autoSt.textContent='\u2022 Live';autoSt.style.color='#5ecc7b';clearPulse(autoSt);
+      }
+
+      // --- METAR ---
+      if(d.metar&&Array.isArray(d.metar)){
+        d.metar.forEach(function(m){
+          if(!m.icaoId)return;
+          var id=m.icaoId;
+          try{
+            var windDir=m.wdir||0,windSpd=m.wspd||0;
+            document.getElementById('metar-wind-'+id).textContent=windDir+'\u00B0';
+            document.getElementById('metar-windsub-'+id).textContent=windSpd+'kt';
+            document.getElementById('metar-vis-'+id).textContent=(m.visib||'--')+'';
+            var ceil='CLR';
+            if(m.clouds&&m.clouds.length>0){
+              var c=m.clouds[m.clouds.length-1];
+              ceil=c.cover+(c.base?' '+c.base:'');
+            }
+            document.getElementById('metar-ceil-'+id).textContent=ceil;
+            document.getElementById('metar-temp-'+id).textContent=(m.temp||'--')+'/'+(m.dewp||'--');
+            document.getElementById('metar-raw-'+id).textContent=m.rawOb||'--';
+            var cat=m.fltCat||'VFR';
+            var catEl=document.getElementById('metar-cat-'+id);
+            catEl.textContent=cat;
+            var catColors={VFR:'#2e8b4a',MVFR:'#2d6cc0',IFR:'#c43c3c',LIFR:'#9a3ca0'};
+            catEl.style.color=catColors[cat]||'var(--text)';
+            catEl.style.background=(catColors[cat]||'#888')+'22';
+            if(m.reportTime){
+              var rt=new Date(m.reportTime);
+              document.getElementById('metar-time-'+id).textContent=rt.getUTCHours().toString().padStart(2,'0')+':'+rt.getUTCMinutes().toString().padStart(2,'0')+'Z';
+            }
+          }catch(e){}
+        });
+      }
+
+      // --- Bluesky ---
+      if(d.bluesky&&d.bluesky.feed&&d.bluesky.feed.length>0){
+        var post=d.bluesky.feed[0].post;
+        var text=post.record.text||'';
+        var date=new Date(post.record.createdAt);
+        var now=new Date();var diff=now-date;var ago='';
+        if(diff<3600000)ago=Math.floor(diff/60000)+'m';
+        else if(diff<86400000)ago=Math.floor(diff/3600000)+'h';
+        else if(diff<604800000)ago=Math.floor(diff/86400000)+'d';
+        else ago=date.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        var postUri=post.uri.split('/').pop();
+        var postUrl='https://bsky.app/profile/bilalaman.bsky.social/post/'+postUri;
+        var imgHtml='';
+        if(post.embed&&post.embed.images&&post.embed.images.length>0){
+          imgHtml='<div style="display:flex;gap:6px;margin-top:8px;overflow:hidden;border-radius:8px;">';
+          post.embed.images.forEach(function(img){
+            imgHtml+='<img src="'+img.thumb+'" alt="'+(img.alt||'')+'" style="width:100%;border-radius:8px;object-fit:contain;" loading="lazy"/>';
+          });
+          imgHtml+='</div>';
+        }
+        var html='<a href="'+postUrl+'" target="_blank" rel="noopener" style="text-decoration:none;display:block;padding:14px;background:var(--surface-2);border-radius:10px;border:1px solid var(--border);transition:border-color .3s;" onmouseover="this.style.borderColor=\'var(--gold-dim)\'" onmouseout="this.style.borderColor=\'var(--border)\'">';
+        html+='<div style="font-size:13px;color:var(--text);line-height:1.6;">'+text.replace(/\n/g,'<br>')+'</div>';
+        html+=imgHtml;
+        html+='<div style="display:flex;gap:16px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);">';
+        html+='<span style="font-size:10px;color:var(--text-muted);">\u2764\uFE0F '+(post.likeCount||0)+'</span>';
+        html+='<span style="font-size:10px;color:var(--text-muted);">\uD83D\uDD01 '+(post.repostCount||0)+'</span>';
+        html+='<span style="font-size:10px;color:var(--text-muted);">\uD83D\uDCAC '+(post.replyCount||0)+'</span>';
+        html+='<span style="font-size:10px;color:var(--text-muted);margin-left:auto;">'+ago+'</span>';
+        html+='</div></a>';
+        document.getElementById('bsky-feed').innerHTML=html;
+        var bst=document.getElementById('bsky-status');bst.textContent='\u2022 Live';bst.style.color='#5ecc7b';clearPulse(bst);
+      }
+
+      // --- Sunrise/Sunset ---
+      if(d.sunrise&&d.sunrise.results){
+        var r=d.sunrise.results;
+        var rise=new Date(r.sunrise);
+        var set=new Date(r.sunset);
+        var riseStr=rise.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
+        var setStr=set.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true,timeZone:'America/New_York'});
+        var rEl=document.getElementById('sun-rise');rEl.textContent=riseStr;clearPulse(rEl);
+        var sEl=document.getElementById('sun-set');sEl.textContent=setStr;clearPulse(sEl);
+        var dayMs=set-rise;
+        document.getElementById('sun-daylight').textContent=Math.floor(dayMs/3600000)+'h '+Math.floor((dayMs%3600000)/60000)+'m of daylight';
+        var sunSt=document.getElementById('sun-status');sunSt.textContent='\u2022 Live';sunSt.style.color='#5ecc7b';clearPulse(sunSt);
+      }
+
+      // --- Fear & Greed ---
+      if(d.fearGreed&&d.fearGreed.data&&d.fearGreed.data[0]){
+        var fg=d.fearGreed.data[0];
+        var fgVal=parseInt(fg.value);
+        var fgLabel=fg.value_classification||'';
+        document.getElementById('fg-value').textContent=fgVal;
+        document.getElementById('fg-label').textContent=fgLabel;
+        // Update arc
+        var arc=document.getElementById('fg-arc');
+        if(arc){var pct=fgVal/100;arc.setAttribute('stroke-dasharray',(pct*204)+' 204');}
+        var fgColor=fgVal<=25?'var(--red)':fgVal<=45?'var(--orange)':fgVal<=55?'var(--text-muted)':fgVal<=75?'var(--green)':'var(--green)';
+        document.getElementById('fg-value').setAttribute('fill',fgColor);
+      }
+
+      // --- Morning Brief ---
+      if(d.brief&&d.brief.sentences){
+        var briefEl=document.getElementById('morning-brief-text');
+        if(briefEl){
+          briefEl.innerHTML=d.brief.sentences.map(function(s){return '<div style="margin-bottom:6px;">'+s+'</div>';}).join('');
+        }
+      }
+
+      console.log('[Worker] /api/all loaded at '+new Date().toLocaleTimeString());
+    }catch(e){
+      console.error('[Worker] Parse error:',e);
+      // Fall back to individual loaders
+      loadDow();loadTreasury();loadHYSpread();loadAutoMarket();loadBluesky();loadSunrise();loadFearGreed();
+    }
+  };
+  xhr.onerror=xhr.ontimeout=function(){
+    console.warn('[Worker] /api/all failed, falling back to proxies');
+    loadDow();loadTreasury();loadHYSpread();loadAutoMarket();loadBluesky();loadSunrise();loadFearGreed();
+  };
+  xhr.send();
+}
+
+// Load from worker immediately, then every 5 min
+setTimeout(loadFromWorker,1000);
+setInterval(loadFromWorker,300000);
 function loadDow(){
   var done=false;var fails=0;var total=2;
   var DIA_MULT=100.58;
@@ -1314,7 +1506,7 @@ function loadDow(){
   x2.onerror=x2.ontimeout=function(){onFail();};
   x2.send();
 }
-setTimeout(loadDow,1500);
+// setTimeout(loadDow,1500); // handled by loadFromWorker
 setInterval(loadDow,300000);
 
 // === DARK/LIGHT THEME TOGGLE ===
@@ -1819,7 +2011,7 @@ function loadFearGreed(){
   };
   x.send();
 }
-setTimeout(loadFearGreed,2000);
+// setTimeout(loadFearGreed,2000); // handled by loadFromWorker
 setInterval(loadFearGreed,1800000);
 
 // === GLOBAL RISK METER (dynamic) ===
@@ -1936,7 +2128,7 @@ function loadAutoMarket(){
     }
   },8000);
 }
-setTimeout(loadAutoMarket,7000);
+// setTimeout(loadAutoMarket,7000); // handled by loadFromWorker
 setInterval(loadAutoMarket,1800000);
 
 // === BLUESKY FEED ===
@@ -2027,7 +2219,7 @@ function loadBluesky(){
     xhr.send();
   });
 }
-setTimeout(loadBluesky,2500);
+// setTimeout(loadBluesky,2500); // handled by loadFromWorker
 setInterval(loadBluesky,900000);
 
 // === TREASURY YIELDS (FRED: DGS10, DGS2, DGS30) ===
@@ -2091,7 +2283,7 @@ function loadTreasury(){
     });
   });
 }
-setTimeout(loadTreasury,8500);
+// setTimeout(loadTreasury,8500); // handled by loadFromWorker
 setInterval(loadTreasury,1800000);
 
 // === HIGH YIELD BOND SPREAD (FRED: BAMLH0A0HYM2) ===
@@ -2166,7 +2358,7 @@ function loadHYSpread(){
     xhr.send();
   });
 }
-setTimeout(loadHYSpread,9000);
+// setTimeout(loadHYSpread,9000); // handled by loadFromWorker
 setInterval(loadHYSpread,1800000);
 
 // === SUNRISE / SUNSET (Newark NJ) ===
@@ -2257,7 +2449,7 @@ function loadSunrise(){
   x3.onerror=x3.ontimeout=function(){onFail();};
   x3.send();
 }
-loadSunrise();
+// loadSunrise(); // handled by loadFromWorker
 setInterval(loadSunrise,3600000);
 
 // === MORNING BRIEF ===
