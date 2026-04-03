@@ -1191,13 +1191,23 @@ function updateTimeGradient(){
 function updateMarketStatus(){
   var el=document.getElementById('market-open-text');
   var now=new Date();
+  var nyStr=now.toLocaleDateString('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
   var nyH=parseInt(now.toLocaleTimeString('en-US',{timeZone:'America/New_York',hour:'2-digit',hour12:false}));
   var nyM=parseInt(now.toLocaleTimeString('en-US',{timeZone:'America/New_York',minute:'2-digit'}));
   var nyMin=nyH*60+nyM;
   var day=new Date(now.toLocaleString('en-US',{timeZone:'America/New_York'})).getDay();
   var isWeekend=(day===0||day===6);
-  var nyseOpen=nyMin>=570&&nyMin<960&&!isWeekend; // 9:30-16:00
-  if(nyseOpen){
+  // NYSE holidays 2026 (MM/DD/YYYY format matching nyStr)
+  var holidays=[
+    '01/01/2026','01/19/2026','02/16/2026','04/03/2026',
+    '05/25/2026','06/19/2026','07/03/2026','09/07/2026',
+    '11/26/2026','12/25/2026'
+  ];
+  var isHoliday=holidays.indexOf(nyStr)>-1;
+  var nyseOpen=nyMin>=570&&nyMin<960&&!isWeekend&&!isHoliday;
+  if(isHoliday){
+    el.textContent='Holiday';el.style.color='var(--gold)';el.style.fontWeight='500';
+  }else if(nyseOpen){
     el.textContent='NYSE Open';el.style.color='#2e8b4a';el.style.fontWeight='600';
   }else if(!isWeekend&&nyMin>=540&&nyMin<570){
     el.textContent='Pre-Market';el.style.color='var(--gold)';el.style.fontWeight='500';
