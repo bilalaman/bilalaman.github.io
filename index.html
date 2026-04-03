@@ -586,6 +586,50 @@ body.dark .footer::before{background:#c4a54d}
       <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">BLS &#183; Seasonally Adj &#183; <a href="https://fred.stlouisfed.org/series/CUSR0000SETA02" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">FRED &#8594;</a></div>
     </div>
 
+    <!-- TREASURY YIELDS -->
+    <div class="card" style="grid-column:span 4;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Treasury Yields</div>
+        <span id="tsy-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
+      </div>
+      <div id="tsy-10y" style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--text);line-height:1;" class="loading-pulse">--%</div>
+      <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">10-Year Note</div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <div class="stat-box" style="flex:1;padding:8px;">
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">2-Yr</div>
+          <div id="tsy-2y" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--text);margin-top:2px;">--</div>
+        </div>
+        <div class="stat-box" style="flex:1;padding:8px;">
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">30-Yr</div>
+          <div id="tsy-30y" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--text);margin-top:2px;">--</div>
+        </div>
+      </div>
+      <div id="tsy-spread" style="font-size:9px;color:var(--text-muted);margin-top:8px;text-align:center;">--</div>
+      <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">Fed Reserve &#183; <a href="https://fred.stlouisfed.org/series/DGS10" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">FRED &#8594;</a></div>
+    </div>
+
+    <!-- HIGH YIELD BOND SPREAD -->
+    <div class="card" style="grid-column:span 4;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <div style="font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;">Credit Spread</div>
+        <span id="hy-status" style="font-size:8px;color:var(--text-muted);" class="loading-pulse">...</span>
+      </div>
+      <div id="hy-val" style="font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:600;color:var(--text);line-height:1;" class="loading-pulse">--%</div>
+      <div style="font-size:9px;color:var(--text-muted);margin-top:2px;">HY OAS vs Treasury</div>
+      <div style="display:flex;gap:8px;margin-top:10px;">
+        <div class="stat-box" style="flex:1;padding:8px;">
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Prior</div>
+          <div id="hy-prev" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--text);margin-top:2px;">--</div>
+        </div>
+        <div class="stat-box" style="flex:1;padding:8px;">
+          <div style="font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Signal</div>
+          <div id="hy-signal" style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;color:var(--green);margin-top:2px;">--</div>
+        </div>
+      </div>
+      <div id="hy-context" style="font-size:9px;color:var(--text-muted);margin-top:8px;text-align:center;">--</div>
+      <div style="font-size:8px;color:var(--text-muted);margin-top:4px;">ICE BofA &#183; <a href="https://fred.stlouisfed.org/series/BAMLH0A0HYM2" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;">FRED &#8594;</a></div>
+    </div>
+
     <!-- PAKISTAN -->
     <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .43s both;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
