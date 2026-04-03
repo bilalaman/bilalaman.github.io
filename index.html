@@ -1231,11 +1231,12 @@ function loadAllAirports(){
     function showResult(hasDelay,reason){
       if(done)return;done=true;
       if(hasDelay){
-        el.textContent='DELAY';el.style.color='var(--red)';clearPulse(el);
-        pill.title=code+': '+(reason||'Delays reported')+' (click to refresh)';
+        var label=reason&&reason.toLowerCase().indexOf('ground stop')>-1?'Ground Stop':'FAA Delay';
+        el.textContent=label;el.style.color='var(--red)';el.style.fontWeight='700';clearPulse(el);
+        pill.title=code+': '+(reason||'FAA delay program active')+' (click to refresh)';
       }else{
-        el.textContent='On Time';el.style.color='var(--green)';clearPulse(el);
-        pill.title=code+': No delays (click to refresh)';
+        el.textContent='Clear';el.style.color='var(--green)';clearPulse(el);
+        pill.title=code+': No FAA delays (click to refresh)';
       }
     }
     function onFail(){
