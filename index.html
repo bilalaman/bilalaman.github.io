@@ -1498,7 +1498,20 @@ function loadFromWorker(){
       if(d.brief&&d.brief.sentences){
         var briefEl=document.getElementById('brief-content');
         if(briefEl){
-          briefEl.innerHTML=d.brief.sentences.map(function(s){return '<div style="margin-bottom:6px;">'+s+'</div>';}).join('');
+          var icons=['&#x1F4CA;','&#x1F4C9;','&#x1F3AF;'];
+          briefEl.innerHTML=d.brief.sentences.map(function(s,i){
+            return '<div style="margin-bottom:6px;">'+icons[i]+' '+s+'</div>';
+          }).join('');
+          clearPulse(briefEl);
+        }
+        if(d.generated){
+          var bt=document.getElementById('brief-time');
+          if(bt)bt.textContent=new Date(d.generated).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+        }
+      }else{
+        var briefEl=document.getElementById('brief-content');
+        if(briefEl){
+          briefEl.textContent='Markets closed \u2014 brief generates when markets open.';
           clearPulse(briefEl);
         }
       }
@@ -2537,37 +2550,38 @@ setInterval(loadSunrise,3600000);
 // === MORNING BRIEF ===
 function loadBrief(){
   var xhr=new XMLHttpRequest();
-  xhr.open('GET',WORKER_API+'/api/brief',true);
+  xhr.open('GET',WORKER_API+'/api/all',true);
   xhr.timeout=15000;
   xhr.onload=function(){
     try{
       var d=JSON.parse(xhr.responseText);
-      if(d.error){document.getElementById('brief-content').textContent='Brief unavailable.';return;}
+      if(!d.brief||!d.brief.sentences){
+        document.getElementById('brief-content').textContent='Markets closed — brief generates when markets open.';
+        clearPulse(document.getElementById('brief-content'));
+        return;
+      }
       var el=document.getElementById('brief-content');
-      var sentences=d.sentences||[d.brief];
+      var sentences=d.brief.sentences;
       el.innerHTML=sentences.map(function(s,i){
         var icon=i===0?'&#x1F4CA;':i===1?'&#x1F4C9;':'&#x1F3AF;';
         return '<div style="margin-bottom:6px;">'+icon+' '+s+'</div>';
       }).join('');
       clearPulse(el);
-      // Data pills
+      // Data pills from worker response
       var pills=document.getElementById('brief-data');
-      if(d.data){
+      if(d.dji||d.treasury||d.hy||d.claims){
         var h='';
-        var items=[
-          {label:'S&P 500',val:(parseFloat(d.data.spy_pct)>=0?'+':'')+d.data.spy_pct+'%',pos:parseFloat(d.data.spy_pct)>=0},
-          {label:'Dow Jones',val:(parseFloat(d.data.dia_pct)>=0?'+':'')+d.data.dia_pct+'%',pos:parseFloat(d.data.dia_pct)>=0},
-          {label:'10Y Yield',val:d.data.ten_yr+'%'},
-          {label:'HY Spread',val:d.data.hy_spread+'%'},
-          {label:'Claims',val:d.data.claims+'K'}
-        ];
+        var items=[];
+        if(d.dji)items.push({label:'Dow Jones',val:(parseFloat(d.dji.change_pct)>=0?'+':'')+d.dji.change_pct+'%',pos:parseFloat(d.dji.change_pct)>=0});
+        if(d.treasury&&d.treasury.DGS10)items.push({label:'10Y Yield',val:d.treasury.DGS10.value.toFixed(2)+'%'});
+        if(d.hy)items.push({label:'HY Spread',val:d.hy.value.toFixed(2)+'%'});
+        if(d.claims)items.push({label:'Claims',val:(d.claims.value>1000?(d.claims.value/1000).toFixed(0):d.claims.value)+'K'});
         items.forEach(function(it){
           var color=it.pos!==undefined?(it.pos?'var(--green)':'var(--red)'):'var(--gold)';
           h+='<div style="padding:6px 14px;background:var(--surface-2);border-radius:8px;border:1px solid var(--border);font-family:JetBrains Mono,monospace;font-size:10px;display:flex;align-items:center;gap:6px;"><span style="color:var(--text-muted);font-size:9px;">'+it.label+'</span><span style="color:'+color+';font-weight:600;">'+it.val+'</span></div>';
         });
         pills.innerHTML=h;
       }
-      // Timestamp
       if(d.generated){
         var t=new Date(d.generated);
         document.getElementById('brief-time').textContent=t.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
@@ -2583,7 +2597,7 @@ function loadBrief(){
   };
   xhr.send();
 }
-setTimeout(loadBrief,2000);
+// setTimeout(loadBrief,2000); // handled by loadFromWorker
 
 // === THIS DAY IN AVIATION ===
 (function(){
