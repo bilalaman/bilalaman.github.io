@@ -1466,6 +1466,39 @@ function loadFromWorker(){
         }
       }
 
+      // --- Heatmap ---
+      if(d.heatmap){
+        var hmMap={SPY:'hm-spy',QQQ:'hm-qqq',GLD:'hm-gld',USO:'hm-uso','BTC/USD':'hm-btc','EUR/USD':'hm-eur'};
+        var hmCount=0;
+        Object.keys(hmMap).forEach(function(sym){
+          if(d.heatmap[sym]){
+            var pct=parseFloat(d.heatmap[sym].percent_change);
+            var box=document.getElementById(hmMap[sym]);
+            if(!box)return;
+            var valDiv=box.querySelector('div:last-child');
+            var sign=pct>=0?'+':'';
+            valDiv.textContent=sign+pct.toFixed(2)+'%';
+            clearPulse(valDiv);
+            var abs=Math.abs(pct);
+            var intensity=Math.min(abs/3,1);
+            if(pct>=0){
+              box.style.background='rgba(46,139,74,'+intensity*0.15+')';
+              box.style.borderColor='rgba(46,139,74,'+intensity*0.3+')';
+              valDiv.style.color='var(--green)';
+            }else{
+              box.style.background='rgba(196,60,60,'+intensity*0.15+')';
+              box.style.borderColor='rgba(196,60,60,'+intensity*0.3+')';
+              valDiv.style.color='var(--red)';
+            }
+            hmCount++;
+          }
+        });
+        if(hmCount>0){
+          var hmSt=document.getElementById('heatmap-status');
+          hmSt.textContent='\u2022 Live';hmSt.style.color='#5ecc7b';clearPulse(hmSt);
+        }
+      }
+
       console.log('[Worker] /api/all loaded at '+new Date().toLocaleTimeString());
     }catch(e){
       console.error('[Worker] Parse error:',e);
@@ -2666,7 +2699,7 @@ function loadHeatmap(){
     xhr.send();
   });
 }
-setTimeout(loadHeatmap,3500);
+// setTimeout(loadHeatmap,3500); // handled by loadFromWorker
 setInterval(loadHeatmap,300000);
 
 // === NJ TRANSIT STATUS (Northeast Corridor) ===
