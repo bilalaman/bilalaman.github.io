@@ -262,6 +262,22 @@ body.dark .footer::before{background:#c4a54d}
     </div>
 
     <!-- THOUGHTS -->
+
+    <!-- MORNING BRIEF -->
+    <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .19s both;border-left:3px solid var(--gold);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:15px;font-weight:600;color:var(--gold);">Morning Brief</div>
+          <div style="display:flex;align-items:center;gap:4px;"><div class="dot-live" style="width:6px;height:6px;"></div><span style="font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:1.5px;">Live</span></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="brief-time" style="font-size:8px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;"></span>
+          <button class="refresh-btn" onclick="loadBrief()" style="font-size:9px;padding:3px 10px;">&#8635;</button>
+        </div>
+      </div>
+      <div id="brief-content" style="font-size:13px;color:var(--text);line-height:1.7;" class="loading-pulse">Generating brief...</div>
+      <div id="brief-data" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;"></div>
+    </div>
     <div class="card" style="grid-column:span 12;animation:fadeUp .7s ease .22s both;">
       <div style="display:flex;align-items:flex-start;gap:16px;">
         <div style="flex-shrink:0;width:36px;height:36px;border-radius:10px;background:linear-gradient(145deg,#9a7d2e20,#9a7d2e08);display:flex;align-items:center;justify-content:center;font-size:18px;border:1px solid #9a7d2e22;">&#x270D;</div>
@@ -1067,7 +1083,7 @@ function refreshAll(){
   loadBluesky();loadFearGreed();loadCNBC();loadGas();
   loadAutoMarket();loadTreasury();loadHYSpread();
   loadMortgage();loadCCI();loadClaims();loadPakistan();
-  loadHeatmap();loadNJTransit();loadMarchMadness();
+  loadHeatmap();loadNJTransit();loadMarchMadness();loadBrief();
   updateRisk();updateMarketStatus();
   updateSyncTime();
 }
@@ -2290,6 +2306,57 @@ function loadSunrise(){
 }
 loadSunrise();
 setInterval(loadSunrise,3600000);
+
+// === MORNING BRIEF ===
+function loadBrief(){
+  var xhr=new XMLHttpRequest();
+  xhr.open('GET',WORKER_API+'/api/brief',true);
+  xhr.timeout=15000;
+  xhr.onload=function(){
+    try{
+      var d=JSON.parse(xhr.responseText);
+      if(d.error){document.getElementById('brief-content').textContent='Brief unavailable.';return;}
+      var el=document.getElementById('brief-content');
+      var sentences=d.sentences||[d.brief];
+      el.innerHTML=sentences.map(function(s,i){
+        var icon=i===0?'&#x1F4CA;':i===1?'&#x1F4C9;':'&#x1F3AF;';
+        return '<div style="margin-bottom:6px;">'+icon+' '+s+'</div>';
+      }).join('');
+      clearPulse(el);
+      // Data pills
+      var pills=document.getElementById('brief-data');
+      if(d.data){
+        var h='';
+        var items=[
+          {label:'S&P',val:d.data.spy_pct+'%',pos:parseFloat(d.data.spy_pct)>=0},
+          {label:'DJI',val:d.data.dia_pct+'%',pos:parseFloat(d.data.dia_pct)>=0},
+          {label:'10Y',val:d.data.ten_yr+'%'},
+          {label:'HY',val:d.data.hy_spread+'%'},
+          {label:'Claims',val:d.data.claims+'K'}
+        ];
+        items.forEach(function(it){
+          var color=it.pos!==undefined?(it.pos?'var(--green)':'var(--red)'):'var(--text-muted)';
+          h+='<div style="padding:4px 10px;background:var(--surface-2);border-radius:6px;font-family:JetBrains Mono,monospace;font-size:10px;"><span style="color:var(--text-muted);">'+it.label+'</span> <span style="color:'+color+';font-weight:600;">'+it.val+'</span></div>';
+        });
+        pills.innerHTML=h;
+      }
+      // Timestamp
+      if(d.generated){
+        var t=new Date(d.generated);
+        document.getElementById('brief-time').textContent=t.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+      }
+    }catch(e){
+      document.getElementById('brief-content').textContent='Brief unavailable.';
+      clearPulse(document.getElementById('brief-content'));
+    }
+  };
+  xhr.onerror=xhr.ontimeout=function(){
+    document.getElementById('brief-content').textContent='Brief unavailable -- check connection.';
+    clearPulse(document.getElementById('brief-content'));
+  };
+  xhr.send();
+}
+setTimeout(loadBrief,2000);
 
 // === THIS DAY IN AVIATION ===
 (function(){
