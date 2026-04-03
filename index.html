@@ -1459,9 +1459,10 @@ function loadFromWorker(){
 
       // --- Morning Brief ---
       if(d.brief&&d.brief.sentences){
-        var briefEl=document.getElementById('morning-brief-text');
+        var briefEl=document.getElementById('brief-content');
         if(briefEl){
           briefEl.innerHTML=d.brief.sentences.map(function(s){return '<div style="margin-bottom:6px;">'+s+'</div>';}).join('');
+          clearPulse(briefEl);
         }
       }
 
